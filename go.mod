@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/jinzhu/copier v0.3.5
-	github.com/kluctl/go-embed-python v0.0.0-3.10.6-20220906-1
+	github.com/kluctl/go-embed-python v0.0.0-3.10.6-20220906-2
 	github.com/stretchr/testify v1.7.2
 )
 
