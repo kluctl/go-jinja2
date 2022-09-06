@@ -63,7 +63,7 @@ func WithGlobals(globals map[string]any) Jinja2Opt {
 	}
 }
 
-func WithExtention(e string) Jinja2Opt {
+func WithExtension(e string) Jinja2Opt {
 	return func(o *jinja2Options) {
 		o.Extensions = append(o.Extensions, e)
 	}
