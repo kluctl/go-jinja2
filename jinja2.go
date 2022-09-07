@@ -66,6 +66,10 @@ func NewJinja2(name string, parallelism int, opts ...Jinja2Opt) (*Jinja2, error)
 		o(&j2.defaultOptions)
 	}
 
+	for _, p := range j2.defaultOptions.pythonPath {
+		j2.ep.AddPythonPath(p)
+	}
+
 	for i := 0; i < parallelism; i++ {
 		wg.Add(1)
 		go func() {

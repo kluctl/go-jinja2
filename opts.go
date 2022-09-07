@@ -9,9 +9,18 @@ type jinja2Options struct {
 	Globals    map[string]any `json:"globals"`
 
 	Extensions []string `json:"extensions"`
+
+	// not passed to renderer
+	pythonPath []string
 }
 
 type Jinja2Opt func(o *jinja2Options)
+
+func WithPythonPath(p string) Jinja2Opt {
+	return func(o *jinja2Options) {
+		o.pythonPath = append(o.pythonPath, p)
+	}
+}
 
 func WithStrict(strict bool) Jinja2Opt {
 	return func(o *jinja2Options) {
