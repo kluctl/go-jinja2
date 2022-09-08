@@ -53,7 +53,7 @@ def sha256(s):
 
 @jinja2.pass_context
 def load_template(ctx, path, **kwargs):
-    t = ctx.environment.get_template(path.replace('\\', '/'), parent=ctx.name)
+    t = ctx.environment.get_template(path.replace(os.path.sep, '/'), parent=ctx.name)
     vars = merge_dict(ctx.parent, kwargs)
     return t.render(vars)
 

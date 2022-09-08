@@ -19,7 +19,7 @@ class MyEnvironment(Environment):
         if template[:2] == "./":
             p = os.path.join(os.path.dirname(parent), template)
             p = os.path.normpath(p)
-            return p.replace('\\', '/')
+            return p.replace(os.path.sep, '/')
         return template
 
 
@@ -56,25 +56,23 @@ class SearchPathAbsLoader(BaseLoader):
     def __init__(self, searchpath):
         self.searchpath = searchpath
 
+
     def get_source(
             self, environment: "Environment", template: str
     ) -> typing.Tuple[str, str, typing.Callable[[], bool]]:
         try:
             if not os.path.isabs(template):
                 raise TemplateNotFound(template)
-            if os.path.abspath(template) != template:
-                raise TemplateNotFound(template)
+            template = os.path.abspath(template)
             found = False
             for s in self.searchpath:
                 sabs = os.path.abspath(s)
-                if template.startswith(sabs):
+                if template.startswith(sabs + os.path.sep):
                     found = True
             if not found:
                 raise TemplateNotFound(template)
         except OSError:
             raise TemplateNotFound(template)
-
-
 
         return _read_template_helper(template)
 
