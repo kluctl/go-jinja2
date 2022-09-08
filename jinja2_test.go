@@ -207,18 +207,18 @@ func TestRenderFiles_Includes(t *testing.T) {
 		{
 			name: "include with absolute file fails",
 			files: map[string]string{
-				"f.yaml": fmt.Sprintf(`{%% include "%s/include.yaml" %%}`, includeDir),
+				"f.yaml": fmt.Sprintf(`{%% include "%s/include.yaml" %%}`, filepath.ToSlash(includeDir)),
 			},
 			t:   "f.yaml",
-			err: fmt.Sprintf("template %s/include.yaml not found", includeDir),
+			err: fmt.Sprintf("template %s/include.yaml not found", filepath.ToSlash(includeDir)),
 		},
 		{
 			name: "load_template with absolute file fails",
 			files: map[string]string{
-				"f.yaml": fmt.Sprintf(`{{ load_template("%s/include.yaml") }}`, includeDir),
+				"f.yaml": fmt.Sprintf(`{{ load_template("%s/include.yaml") }}`, filepath.ToSlash(includeDir)),
 			},
 			t:   "f.yaml",
-			err: fmt.Sprintf("template %s/include.yaml not found", includeDir),
+			err: fmt.Sprintf("template %s/include.yaml not found", filepath.ToSlash(includeDir)),
 		},
 		{
 			name: "include without searchdir fails",
