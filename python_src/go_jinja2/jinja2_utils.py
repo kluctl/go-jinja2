@@ -2,8 +2,9 @@ import io
 import os
 import sys
 import traceback
+import typing
 
-from jinja2 import Environment, TemplateNotFound
+from jinja2 import Environment, TemplateNotFound, BaseLoader
 
 
 # This Jinja2 environment allows to load templates relative to the parent template. This means that for example
@@ -20,6 +21,63 @@ class MyEnvironment(Environment):
             p = os.path.normpath(p)
             return p.replace('\\', '/')
         return template
+
+
+def _read_template_helper(template):
+    try:
+        with open(template) as f:
+            contents = f.read()
+    except OSError:
+        raise TemplateNotFound(template)
+    mtime = os.path.getmtime(template)
+
+    def uptodate() -> bool:
+        try:
+            return os.path.getmtime(template) == mtime
+        except OSError:
+            return False
+
+    return contents, os.path.normpath(template), uptodate
+
+class RootTemplateLoader(BaseLoader):
+    def __init__(self):
+        super().__init__()
+        self.root_template = None
+
+    def get_source(
+            self, environment: "Environment", template: str
+    ) -> typing.Tuple[str, typing.Optional[str], typing.Optional[typing.Callable[[], bool]]]:
+        if template != self.root_template:
+            raise TemplateNotFound(template)
+        return _read_template_helper(template)
+
+
+class SearchPathAbsLoader(BaseLoader):
+    def __init__(self, searchpath):
+        self.searchpath = searchpath
+
+    def get_source(
+            self, environment: "Environment", template: str
+    ) -> typing.Tuple[str, str, typing.Callable[[], bool]]:
+        try:
+            if not os.path.isabs(template):
+                raise TemplateNotFound(template)
+            if os.path.abspath(template) != template:
+                raise TemplateNotFound(template)
+            found = False
+            for s in self.searchpath:
+                sabs = os.path.abspath(s)
+                if template.startswith(sabs):
+                    found = True
+            if not found:
+                raise TemplateNotFound(template)
+        except OSError:
+            raise TemplateNotFound(template)
+
+
+
+        return _read_template_helper(template)
+
 
 def extract_template_error(e):
     try:
