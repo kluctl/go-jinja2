@@ -11,7 +11,6 @@ from jinja2 import Environment, TemplateNotFound
 class MyEnvironment(Environment):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.add_extension("jinja2.ext.loopcontrols")
 
     """Override join_path() to enable relative template paths."""
     """See https://stackoverflow.com/a/3655911/7132642"""
