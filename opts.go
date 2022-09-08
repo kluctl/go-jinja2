@@ -1,7 +1,7 @@
 package jinja2
 
 type jinja2Options struct {
-	Strict       bool `json:"strict"`
+	NonStrict    bool `json:"nonStrict"`
 	TrimBlocks   bool `json:"trimBlocks"`
 	LstripBlocks bool `json:"lstripBlocks"`
 
@@ -24,7 +24,7 @@ func WithPythonPath(p string) Jinja2Opt {
 
 func WithStrict(strict bool) Jinja2Opt {
 	return func(o *jinja2Options) {
-		o.Strict = strict
+		o.NonStrict = !strict
 	}
 }
 

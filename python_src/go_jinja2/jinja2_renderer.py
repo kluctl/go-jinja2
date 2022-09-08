@@ -24,7 +24,7 @@ class Jinja2Renderer:
 
     def build_env(self):
         environment = MyEnvironment(loader=FileSystemLoader(self.opts.get("searchDirs", [])),
-                                    undefined=StrictUndefined if self.opts.get("strict", True) else NullUndefined,
+                                    undefined=NullUndefined if self.opts.get("nonStrict", False) else StrictUndefined,
                                     cache_size=10000,
                                     auto_reload=False,
                                     trim_blocks=self.opts.get("trimBlocks", False),
