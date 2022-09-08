@@ -16,9 +16,11 @@ class MyEnvironment(Environment):
     """Override join_path() to enable relative template paths."""
     """See https://stackoverflow.com/a/3655911/7132642"""
     def join_path(self, template, parent):
-        p = os.path.join(os.path.dirname(parent), template)
-        p = os.path.normpath(p)
-        return p.replace('\\', '/')
+        if template[:2] == "./":
+            p = os.path.join(os.path.dirname(parent), template)
+            p = os.path.normpath(p)
+            return p.replace('\\', '/')
+        return template
 
 def extract_template_error(e):
     try:
