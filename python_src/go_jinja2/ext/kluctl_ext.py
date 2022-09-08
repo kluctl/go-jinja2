@@ -53,12 +53,7 @@ def sha256(s):
 
 @jinja2.pass_context
 def load_template(ctx, path, **kwargs):
-    dir = os.path.dirname(ctx.name)
-    full_path = os.path.join(dir, path)
-    try:
-        t = ctx.environment.get_template(full_path.replace('\\', '/'))
-    except TemplateNotFound:
-        t = ctx.environment.get_template(path.replace('\\', '/'))
+    t = ctx.environment.get_template(path.replace('\\', '/'), parent=ctx.name)
     vars = merge_dict(ctx.parent, kwargs)
     return t.render(vars)
 
