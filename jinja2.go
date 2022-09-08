@@ -1,6 +1,7 @@
 package jinja2
 
 import (
+	"fmt"
 	"github.com/gobwas/glob"
 	"github.com/hashicorp/go-multierror"
 	"github.com/kluctl/go-embed-python/embed_util"
@@ -238,7 +239,7 @@ func (j *Jinja2) RenderDirectory(sourceDir string, targetDir string, excludePatt
 	var retErr *multierror.Error
 	for _, job := range jobs {
 		if job.Error != nil {
-			retErr = multierror.Append(retErr, job.Error)
+			retErr = multierror.Append(retErr, fmt.Errorf("failed rendering template '%s': %w", job.Template, job.Error))
 			continue
 		}
 
