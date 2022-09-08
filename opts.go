@@ -11,7 +11,9 @@ type jinja2Options struct {
 	Extensions []string `json:"extensions"`
 
 	// not passed to renderer
-	pythonPath []string
+	pythonPath       []string
+	traceJsonSend    func(map[string]any)
+	traceJsonReceive func(map[string]any)
 }
 
 type Jinja2Opt func(o *jinja2Options)
@@ -75,5 +77,17 @@ func WithGlobals(globals map[string]any) Jinja2Opt {
 func WithExtension(e string) Jinja2Opt {
 	return func(o *jinja2Options) {
 		o.Extensions = append(o.Extensions, e)
+	}
+}
+
+func WithTraceJsonSend(f func(map[string]any)) Jinja2Opt {
+	return func(o *jinja2Options) {
+		o.traceJsonSend = f
+	}
+}
+
+func WithTraceJsonReceive(f func(map[string]any)) Jinja2Opt {
+	return func(o *jinja2Options) {
+		o.traceJsonReceive = f
 	}
 }

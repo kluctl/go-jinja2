@@ -171,6 +171,12 @@ func (j *pythonJinja2Renderer) renderHelper(jobs []*RenderJob, isString bool, op
 	}
 	b = append(b, '\n')
 
+	if jargs.Opts.traceJsonSend != nil {
+		var m map[string]any
+		_ = json.Unmarshal(b, &m)
+		jargs.Opts.traceJsonSend(m)
+	}
+
 	_, err = j.stdin.Write(b)
 	if err != nil {
 		j.Close()
@@ -188,6 +194,13 @@ func (j *pythonJinja2Renderer) renderHelper(jobs []*RenderJob, isString bool, op
 			break
 		}
 	}
+
+	if jargs.Opts.traceJsonReceive != nil {
+		var m map[string]any
+		_ = json.Unmarshal(line.Bytes(), &m)
+		jargs.Opts.traceJsonReceive(m)
+	}
+
 	var result []jinja2Result
 	err = json.Unmarshal(line.Bytes(), &result)
 	if err != nil {
