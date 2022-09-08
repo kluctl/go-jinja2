@@ -1,10 +1,15 @@
 package jinja2
 
 import (
+	"github.com/gobwas/glob"
+	"github.com/hashicorp/go-multierror"
 	"github.com/kluctl/go-embed-python/embed_util"
 	"github.com/kluctl/go-embed-python/python"
 	"github.com/kluctl/go-jinja2/internal/data"
 	"github.com/kluctl/go-jinja2/python_src"
+	"io/fs"
+	"os"
+	"path/filepath"
 	"sync"
 )
 
@@ -143,4 +148,104 @@ func (j *Jinja2) RenderFile(template string, opts ...Jinja2Opt) (string, error) 
 		return "", jobs[0].Error
 	}
 	return *jobs[0].Result, nil
+}
+
+func (j *Jinja2) getGlob(pattern string) (glob.Glob, error) {
+	j.mutex.Lock()
+	defer j.mutex.Unlock()
+
+	g, ok := j.globCache[pattern]
+	if ok {
+		if g2, ok := g.(glob.Glob); ok {
+			return g2, nil
+		} else {
+			return nil, g2.(error)
+		}
+	}
+	g, err := glob.Compile(pattern, '/')
+	if err != nil {
+		j.globCache[pattern] = err
+		return nil, err
+	}
+	j.globCache[pattern] = g
+	return g.(glob.Glob), nil
+}
+
+func (j *Jinja2) needsRender(path string, excludedPatterns []string) bool {
+	path = filepath.ToSlash(path)
+
+	for _, p := range excludedPatterns {
+		g, err := j.getGlob(p)
+		if err != nil {
+			return false
+		}
+		if g.Match(path) {
+			return false
+		}
+	}
+	return true
+}
+
+func (j *Jinja2) RenderDirectory(sourceDir string, targetDir string, excludePatterns []string, opts ...Jinja2Opt) error {
+	var jobs []*RenderJob
+
+	err := filepath.WalkDir(sourceDir, func(p string, d fs.DirEntry, err error) error {
+		relPath, err := filepath.Rel(sourceDir, p)
+		if err != nil {
+			return err
+		}
+		if d.IsDir() {
+			err = os.MkdirAll(filepath.Join(targetDir, relPath), 0o700)
+			if err != nil {
+				return err
+			}
+			return nil
+		}
+
+		targetPath := filepath.Join(targetDir, relPath)
+
+		if !j.needsRender(relPath, excludePatterns) {
+			b, err := os.ReadFile(p)
+			if err != nil {
+				return err
+			}
+			err = os.WriteFile(targetPath, b, 0o600)
+			if err != nil {
+				return err
+			}
+			return nil
+		}
+
+		// jinja2 templates are using / even on Windows
+		sourcePath := filepath.ToSlash(p)
+
+		job := &RenderJob{
+			Template: sourcePath,
+			target:   targetPath,
+		}
+		jobs = append(jobs, job)
+		return nil
+	})
+	if err != nil {
+		return err
+	}
+
+	err = j.RenderFiles(jobs, opts...)
+	if err != nil {
+		return err
+	}
+
+	var retErr *multierror.Error
+	for _, job := range jobs {
+		if job.Error != nil {
+			retErr = multierror.Append(retErr, job.Error)
+			continue
+		}
+
+		err = os.WriteFile(job.target, []byte(*job.Result), 0o600)
+		if err != nil {
+			return err
+		}
+	}
+	return retErr.ErrorOrNil()
 }

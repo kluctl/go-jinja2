@@ -3,6 +3,7 @@ package jinja2
 import (
 	"fmt"
 	"github.com/stretchr/testify/assert"
+	"io/fs"
 	"math/rand"
 	"os"
 	"path/filepath"
@@ -53,6 +54,34 @@ func newTemplateDir(t *testing.T, contents map[string]string) string {
 		}
 	}
 	return dir
+}
+
+func assertDirSame(t *testing.T, dir string, expected map[string]string) {
+	found := map[string]string{}
+	err := filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {
+		if d.IsDir() {
+			return nil
+		}
+
+		relPath, err := filepath.Rel(dir, path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		relPath = filepath.ToSlash(relPath)
+
+		b, err := os.ReadFile(path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		found[relPath] = string(b)
+		return nil
+	})
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	assert.Equal(t, expected, found)
 }
 
 func TestJinja2(t *testing.T) {
@@ -299,6 +328,88 @@ func TestRenderFiles_Includes(t *testing.T) {
 				assert.EqualError(t, err, tc.err)
 			}
 			assert.Equal(t, tc.r, r)
+		})
+	}
+}
+
+func TestRenderDirectory(t *testing.T) {
+	type testCase struct {
+		name  string
+		files map[string]string
+		r     map[string]string
+		sd    []string
+		excl  []string
+		err   string
+	}
+
+	includeDir := newTemplateDir(t, map[string]string{
+		"include-dir.yaml": "test",
+	})
+
+	tests := []testCase{
+		{
+			name: "simple",
+			files: map[string]string{
+				"f1.yaml":    `{{ "a" }}`,
+				"d1/f2.yaml": `{{ "b" }}`,
+			},
+			r: map[string]string{
+				"f1.yaml":    `a`,
+				"d1/f2.yaml": `b`,
+			},
+			sd: []string{"self"},
+		},
+		{
+			name: "with include",
+			files: map[string]string{
+				"f1.yaml":          `{{ "a" }}`,
+				"include.yaml":     `{% include "include2.yaml" %}`,
+				"include2.yaml":    `{% include "d2/include3.yaml" %}`,
+				"d1/f2.yaml":       `{% include "include.yaml" %}`,
+				"d2/include3.yaml": `{{ "x" }}`,
+			},
+			r: map[string]string{
+				"d1/f2.yaml":       "x",
+				"d2/include3.yaml": "x",
+				"f1.yaml":          "a",
+				"include.yaml":     "x",
+				"include2.yaml":    "x",
+			},
+			sd: []string{"self"},
+		},
+		{
+			name: "with include and searchdir",
+			files: map[string]string{
+				"f1.yaml": `{% include "include-dir.yaml" %}`,
+			},
+			r: map[string]string{
+				"f1.yaml": "test",
+			},
+			sd: []string{"self", includeDir},
+		},
+	}
+
+	j2 := newJinja2(t)
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			dir := newTemplateDir(t, tc.files)
+			var sd []string
+			for _, x := range tc.sd {
+				if x == "self" {
+					sd = append(sd, dir)
+				} else {
+					sd = append(sd, x)
+				}
+			}
+			targetDir := t.TempDir()
+			err := j2.RenderDirectory(dir, targetDir, tc.excl, WithSearchDirs(sd))
+			if tc.err == "" {
+				assert.NoError(t, err)
+			} else {
+				assert.EqualError(t, err, tc.err)
+			}
+			assertDirSame(t, targetDir, tc.r)
 		})
 	}
 }
