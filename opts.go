@@ -1,6 +1,7 @@
 package jinja2
 
 type jinja2Options struct {
+	DebugTrace   bool `json:"debugTrace"`
 	NonStrict    bool `json:"nonStrict"`
 	TrimBlocks   bool `json:"trimBlocks"`
 	LstripBlocks bool `json:"lstripBlocks"`
@@ -17,6 +18,12 @@ type jinja2Options struct {
 }
 
 type Jinja2Opt func(o *jinja2Options)
+
+func WithDebugTrace(debugTrace bool) Jinja2Opt {
+	return func(o *jinja2Options) {
+		o.DebugTrace = debugTrace
+	}
+}
 
 func WithPythonPath(p string) Jinja2Opt {
 	return func(o *jinja2Options) {

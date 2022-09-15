@@ -1,6 +1,7 @@
-from jinja2 import StrictUndefined, FileSystemLoader, ChainableUndefined, ChoiceLoader
+from jinja2 import StrictUndefined, ChainableUndefined, ChoiceLoader
 
-from .jinja2_utils import MyEnvironment, extract_template_error, RootTemplateLoader, SearchPathAbsLoader
+from .jinja2_utils import MyEnvironment, extract_template_error, RootTemplateLoader, SearchPathAbsLoader, \
+    MyFileSystemLoader
 
 
 class NullUndefined(ChainableUndefined):
@@ -24,13 +25,15 @@ class Jinja2Renderer:
         self.opts = opts
 
     def build_env(self):
+        debug_enabled = self.opts.get("debugTrace", False)
         root_loader = RootTemplateLoader()
         loader = ChoiceLoader([
             root_loader,
             SearchPathAbsLoader(self.opts.get("searchDirs", [])),
-            FileSystemLoader(self.opts.get("searchDirs", [])),
+            MyFileSystemLoader(self.opts.get("searchDirs", [])),
         ])
-        environment = MyEnvironment(loader=loader,
+        environment = MyEnvironment(debug_enabled=debug_enabled,
+                                    loader=loader,
                                     undefined=NullUndefined if self.opts.get("nonStrict", False) else StrictUndefined,
                                     cache_size=10000,
                                     auto_reload=False,
