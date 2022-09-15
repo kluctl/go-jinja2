@@ -1,11 +1,12 @@
 import base64
+import datetime
 import hashlib
 import json
 import os
 import sys
 
 import jinja2
-from jinja2 import TemplateError, TemplateNotFound
+from jinja2 import TemplateError
 from jinja2.ext import Extension
 from jinja2.runtime import Context
 
@@ -53,6 +54,7 @@ def sha256(s):
 
 @jinja2.pass_context
 def load_template(ctx, path, **kwargs):
+    ctx.environment.print_debug("load_template(%s)" % path)
     t = ctx.environment.get_template(path.replace(os.path.sep, '/'), parent=ctx.name)
     vars = merge_dict(ctx.parent, kwargs)
     return t.render(vars)
@@ -114,3 +116,4 @@ def add_jinja2_filters(jinja2_env):
     jinja2_env.globals['raise'] = raise_helper
     jinja2_env.globals['debug_print'] = debug_print
     jinja2_env.globals['load_sha256'] = load_sha256
+    jinja2_env.globals['now'] = datetime.datetime.utcnow
