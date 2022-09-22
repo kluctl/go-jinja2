@@ -1,5 +1,4 @@
 import base64
-import datetime
 import hashlib
 import json
 import os
@@ -116,4 +115,3 @@ def add_jinja2_filters(jinja2_env):
     jinja2_env.globals['raise'] = raise_helper
     jinja2_env.globals['debug_print'] = debug_print
     jinja2_env.globals['load_sha256'] = load_sha256
-    jinja2_env.globals['now'] = datetime.datetime.utcnow
