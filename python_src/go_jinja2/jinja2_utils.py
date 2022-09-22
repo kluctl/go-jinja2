@@ -22,7 +22,7 @@ class MyEnvironment(Environment):
         return result
 
     def _join_path(self, template, parent):
-        if template[:2] == "./":
+        if template[:2] == "./" or template[:3] == "../":
             p = os.path.join(os.path.dirname(parent), template)
             p = os.path.normpath(p)
             p = p.replace(os.path.sep, '/')
