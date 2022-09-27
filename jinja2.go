@@ -2,6 +2,7 @@ package jinja2
 
 import (
 	"fmt"
+	"github.com/go-git/go-git/v5/plumbing/format/gitignore"
 	"github.com/gobwas/glob"
 	"github.com/hashicorp/go-multierror"
 	"github.com/kluctl/go-embed-python/embed_util"
@@ -10,7 +11,9 @@ import (
 	"github.com/kluctl/go-jinja2/python_src"
 	"io/fs"
 	"os"
+	"path"
 	"path/filepath"
+	"strings"
 	"sync"
 )
 
@@ -172,56 +175,54 @@ func (j *Jinja2) getGlob(pattern string) (glob.Glob, error) {
 	return g.(glob.Glob), nil
 }
 
-func (j *Jinja2) needsRender(path string, excludedPatterns []string) bool {
-	path = filepath.ToSlash(path)
-
-	for _, p := range excludedPatterns {
-		g, err := j.getGlob(p)
-		if err != nil {
-			return false
-		}
-		if g.Match(path) {
-			return false
-		}
-	}
-	return true
-}
-
 func (j *Jinja2) RenderDirectory(sourceDir string, targetDir string, excludePatterns []string, opts ...Jinja2Opt) error {
 	var jobs []*RenderJob
 
-	err := filepath.WalkDir(sourceDir, func(p string, d fs.DirEntry, err error) error {
-		relPath, err := filepath.Rel(sourceDir, p)
+	sourceFs := os.DirFS(sourceDir)
+
+	ignore, err := j.readPatterns(sourceFs, nil)
+	if err != nil {
+		return err
+	}
+
+	for _, ep := range excludePatterns {
+		p := gitignore.ParsePattern(ep, nil)
+		ignore = append(ignore, p)
+	}
+
+	ignoreMatcher := gitignore.NewMatcher(ignore)
+
+	err = fs.WalkDir(sourceFs, ".", func(p string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
+
+		targetPath := filepath.Join(targetDir, filepath.FromSlash(p))
+
 		if d.IsDir() {
-			err = os.MkdirAll(filepath.Join(targetDir, relPath), 0o700)
+			err = os.MkdirAll(targetPath, 0o700)
 			if err != nil {
 				return err
 			}
 			return nil
 		}
 
-		targetPath := filepath.Join(targetDir, relPath)
-
-		if !j.needsRender(relPath, excludePatterns) {
-			b, err := os.ReadFile(p)
-			if err != nil {
-				return err
-			}
-			err = os.WriteFile(targetPath, b, 0o600)
-			if err != nil {
-				return err
+		if ignoreMatcher.Match(strings.Split(p, "/"), d.IsDir()) {
+			if !d.IsDir() {
+				b, err := fs.ReadFile(sourceFs, p)
+				if err != nil {
+					return err
+				}
+				err = os.WriteFile(targetPath, b, 0o600)
+				if err != nil {
+					return err
+				}
 			}
 			return nil
 		}
-
-		// jinja2 templates are using / even on Windows
-		sourcePath := filepath.ToSlash(p)
 
 		job := &RenderJob{
-			Template: sourcePath,
+			Template: path.Join(filepath.ToSlash(sourceDir), p),
 			target:   targetPath,
 		}
 		jobs = append(jobs, job)
