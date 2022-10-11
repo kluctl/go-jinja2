@@ -52,8 +52,9 @@ func NewJinja2(name string, parallelism int, opts ...Jinja2Opt) (*Jinja2, error)
 	var err error
 
 	j2 := &Jinja2{
-		globCache: map[string]interface{}{},
-		pj:        make(chan *pythonJinja2Renderer, parallelism),
+		parallelism: parallelism,
+		globCache:   map[string]interface{}{},
+		pj:          make(chan *pythonJinja2Renderer, parallelism),
 	}
 
 	j2.ep, err = python.NewEmbeddedPython(name)
