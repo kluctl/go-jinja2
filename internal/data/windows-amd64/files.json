@@ -1,5 +1,5 @@
 {
-  "contentHash": "e12dea4a0e90592614c057f38529181d8de00ae51b64ea5f724f1ec053dbe502",
+  "contentHash": "cdaae0e650926df83fff08e5b62868030824079b9a084bbe27c9cf22fe3e1852",
   "files": [
     {
       "name": "Jinja2-3.1.2.dist-info",
@@ -139,6 +139,11 @@
     {
       "name": "bin/jsonpath_ng",
       "size": 272,
+      "perm": 493
+    },
+    {
+      "name": "bin/slugify",
+      "size": 250,
       "perm": 493
     },
     {
@@ -688,6 +693,51 @@
       "perm": 420
     },
     {
+      "name": "python_slugify-6.1.2.dist-info",
+      "size": 0,
+      "perm": 2147484141
+    },
+    {
+      "name": "python_slugify-6.1.2.dist-info/INSTALLER",
+      "size": 4,
+      "perm": 420
+    },
+    {
+      "name": "python_slugify-6.1.2.dist-info/LICENSE",
+      "size": 1103,
+      "perm": 420
+    },
+    {
+      "name": "python_slugify-6.1.2.dist-info/METADATA",
+      "size": 7647,
+      "perm": 420
+    },
+    {
+      "name": "python_slugify-6.1.2.dist-info/RECORD",
+      "size": 1417,
+      "perm": 420
+    },
+    {
+      "name": "python_slugify-6.1.2.dist-info/REQUESTED",
+      "size": 0,
+      "perm": 420
+    },
+    {
+      "name": "python_slugify-6.1.2.dist-info/WHEEL",
+      "size": 110,
+      "perm": 420
+    },
+    {
+      "name": "python_slugify-6.1.2.dist-info/entry_points.txt",
+      "size": 51,
+      "perm": 420
+    },
+    {
+      "name": "python_slugify-6.1.2.dist-info/top_level.txt",
+      "size": 8,
+      "perm": 420
+    },
+    {
       "name": "six-1.16.0.dist-info",
       "size": 0,
       "perm": 2147484141
@@ -726,6 +776,97 @@
       "name": "six.py",
       "size": 34549,
       "perm": 420
+    },
+    {
+      "name": "slugify",
+      "size": 0,
+      "perm": 2147484141
+    },
+    {
+      "name": "slugify/__init__.py",
+      "size": 46,
+      "perm": 420
+    },
+    {
+      "name": "slugify/__main__.py",
+      "size": 3866,
+      "perm": 420
+    },
+    {
+      "name": "slugify/__version__.py",
+      "size": 325,
+      "perm": 420
+    },
+    {
+      "name": "slugify/slugify.py",
+      "size": 5795,
+      "perm": 420
+    },
+    {
+      "name": "slugify/special.py",
+      "size": 1167,
+      "perm": 420
+    },
+    {
+      "name": "text_unidecode",
+      "size": 0,
+      "perm": 2147484141
+    },
+    {
+      "name": "text_unidecode-1.3.dist-info",
+      "size": 0,
+      "perm": 2147484141
+    },
+    {
+      "name": "text_unidecode-1.3.dist-info/DESCRIPTION.rst",
+      "size": 1199,
+      "perm": 420
+    },
+    {
+      "name": "text_unidecode-1.3.dist-info/INSTALLER",
+      "size": 4,
+      "perm": 420
+    },
+    {
+      "name": "text_unidecode-1.3.dist-info/LICENSE.txt",
+      "size": 6535,
+      "perm": 420
+    },
+    {
+      "name": "text_unidecode-1.3.dist-info/METADATA",
+      "size": 2422,
+      "perm": 420
+    },
+    {
+      "name": "text_unidecode-1.3.dist-info/RECORD",
+      "size": 937,
+      "perm": 420
+    },
+    {
+      "name": "text_unidecode-1.3.dist-info/WHEEL",
+      "size": 110,
+      "perm": 420
+    },
+    {
+      "name": "text_unidecode-1.3.dist-info/metadata.json",
+      "size": 1299,
+      "perm": 420
+    },
+    {
+      "name": "text_unidecode-1.3.dist-info/top_level.txt",
+      "size": 15,
+      "perm": 420
+    },
+    {
+      "name": "text_unidecode/__init__.py",
+      "size": 484,
+      "perm": 420
+    },
+    {
+      "name": "text_unidecode/data.bin",
+      "size": 311077,
+      "perm": 420,
+      "compressed": true
     },
     {
       "name": "yaml",
