@@ -51,6 +51,11 @@ def sha256(s):
     return hashlib.sha256(s).hexdigest()
 
 
+def slugify(s, allow_unicode=False):
+    from slugify import slugify as _slugify
+    return _slugify(s, allow_unicode=allow_unicode)
+
+
 @jinja2.pass_context
 def load_template(ctx, path, **kwargs):
     ctx.environment.print_debug("load_template(%s)" % path)
@@ -108,6 +113,7 @@ def add_jinja2_filters(jinja2_env):
     jinja2_env.filters['from_yaml'] = from_yaml
     jinja2_env.filters['render'] = render
     jinja2_env.filters['sha256'] = sha256
+    jinja2_env.filters['slugify'] = slugify
     jinja2_env.globals['load_template'] = load_template
     jinja2_env.globals['get_var'] = get_var
     jinja2_env.globals['merge_dict'] = merge_dict
