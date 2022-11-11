@@ -87,6 +87,10 @@ func WithExtension(e string) Jinja2Opt {
 	}
 }
 
+func WithIgnoreGoTemplates() Jinja2Opt {
+	return WithExtension("go_jinja2.ext.ignoregotemplates")
+}
+
 func WithTraceJsonSend(f func(map[string]any)) Jinja2Opt {
 	return func(o *jinja2Options) {
 		o.traceJsonSend = f

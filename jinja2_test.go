@@ -413,3 +413,35 @@ func TestRenderDirectory(t *testing.T) {
 		})
 	}
 }
+
+func TestIgnoreGoTemplates(t *testing.T) {
+	j2 := newJinja2(t, WithIgnoreGoTemplates(), WithGlobals(map[string]any{
+		"a": "v",
+	}))
+
+	s, _ := j2.RenderString(`{{.a}}`)
+	assert.Equal(t, "{{.a}}", s)
+
+	s, _ = j2.RenderString(`{{ a }} {{.a}}`)
+	assert.Equal(t, "v {{.a}}", s)
+
+	s, _ = j2.RenderString(`{{.a}} {{ a }}`)
+	assert.Equal(t, "{{.a}} v", s)
+
+	s, _ = j2.RenderString(`{{.a}} {{ "a" }}`)
+	assert.Equal(t, "{{.a}} a", s)
+
+	s, _ = j2.RenderString(`{{ .a}} {{ "a" }}`)
+	assert.Equal(t, "{{ .a}} a", s)
+	s, _ = j2.RenderString(`{{.a }} {{ "a" }}`)
+	assert.Equal(t, "{{.a }} a", s)
+	s, _ = j2.RenderString(`{{ .a }} {{ "a" }}`)
+	assert.Equal(t, "{{ .a }} a", s)
+
+	s, _ = j2.RenderString(`{{.a}} {{ "{{ a }}" }}`)
+	assert.Equal(t, "{{.a}} {{ a }}", s)
+	s, _ = j2.RenderString(`{{.a}} {{ "{{ .a }}" }}`)
+	assert.Equal(t, "{{.a}} {{ .a }}", s)
+	s, _ = j2.RenderString(`{{.a}} {{ "{{ .  a }}" }}`)
+	assert.Equal(t, "{{.a}} {{ .  a }}", s)
+}
