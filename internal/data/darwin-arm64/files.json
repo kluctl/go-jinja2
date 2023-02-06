@@ -1,5 +1,5 @@
 {
-  "contentHash": "8abc41a9727c4fefd26939c3fe63a54742d347ce03b9b22a35d1dc53d2d8f530",
+  "contentHash": "e013e94e7059302b459668db03d56a95f83b108b0396878623e3c4f25dec8e25",
   "files": [
     {
       "name": "Jinja2-3.1.2.dist-info",
@@ -47,37 +47,37 @@
       "perm": 420
     },
     {
-      "name": "MarkupSafe-2.1.1.dist-info",
+      "name": "MarkupSafe-2.1.2.dist-info",
       "size": 0,
       "perm": 2147484141
     },
     {
-      "name": "MarkupSafe-2.1.1.dist-info/INSTALLER",
+      "name": "MarkupSafe-2.1.2.dist-info/INSTALLER",
       "size": 4,
       "perm": 420
     },
     {
-      "name": "MarkupSafe-2.1.1.dist-info/LICENSE.rst",
+      "name": "MarkupSafe-2.1.2.dist-info/LICENSE.rst",
       "size": 1475,
       "perm": 420
     },
     {
-      "name": "MarkupSafe-2.1.1.dist-info/METADATA",
-      "size": 3242,
+      "name": "MarkupSafe-2.1.2.dist-info/METADATA",
+      "size": 3222,
       "perm": 420
     },
     {
-      "name": "MarkupSafe-2.1.1.dist-info/RECORD",
+      "name": "MarkupSafe-2.1.2.dist-info/RECORD",
       "size": 1099,
       "perm": 420
     },
     {
-      "name": "MarkupSafe-2.1.1.dist-info/WHEEL",
+      "name": "MarkupSafe-2.1.2.dist-info/WHEEL",
       "size": 115,
       "perm": 420
     },
     {
-      "name": "MarkupSafe-2.1.1.dist-info/top_level.txt",
+      "name": "MarkupSafe-2.1.2.dist-info/top_level.txt",
       "size": 11,
       "perm": 420
     },
@@ -588,7 +588,7 @@
     },
     {
       "name": "markupsafe/__init__.py",
-      "size": 9284,
+      "size": 9306,
       "perm": 420
     },
     {
@@ -603,7 +603,7 @@
     },
     {
       "name": "markupsafe/_speedups.cpython-310-darwin.so",
-      "size": 117457,
+      "size": 117484,
       "perm": 493,
       "compressed": true
     },
