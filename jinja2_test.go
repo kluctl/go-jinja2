@@ -111,6 +111,13 @@ func TestJinja2(t *testing.T) {
 	s, err = j2.RenderString("test - {{ get_var('test_var2.test1', 'd') }}", WithExtension("go_jinja2.ext.kluctl"))
 	assert.NoError(t, err)
 	assert.Equal(t, "test - d", s)
+
+	s, err = j2.RenderString("test - {{ test_var1 | add(2) }}", WithFilter("add", `
+def add(a, b):
+	return int(a) + int(b)
+`))
+	assert.NoError(t, err)
+	assert.Equal(t, "test - 3", s)
 }
 
 type testStruct struct {
