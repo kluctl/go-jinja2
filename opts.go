@@ -108,6 +108,10 @@ func WithFilter(name string, code string) Jinja2Opt {
 	}
 }
 
+// WithExtension adds a custom extension to the engine
+//
+// You can pass in an import path to an extension (for using some built-in extension, e.g. `jinja2.ext.debug`)
+// Or you can pass in the code of an extension (there must be exactly one class inherited from `jinja2.ext.Extension`)
 func WithExtension(e string) Jinja2Opt {
 	return func(o *jinja2Options) {
 		o.Extensions = append(o.Extensions, e)

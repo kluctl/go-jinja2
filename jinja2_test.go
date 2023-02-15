@@ -125,6 +125,21 @@ def multiply(a, b):
 `))
 	assert.NoError(t, err)
 	assert.Equal(t, "test - 6", s)
+
+	s, err = j2.RenderString("test - {{ test_var1 | minus(-2) }}", WithExtension(`
+from jinja2.ext import Extension
+
+class DemoExtension(Extension):
+    def __init__(self, environment):
+        super().__init__(environment)
+        environment.filters['minus'] = self.minus
+        
+    @staticmethod
+    def minus(a, b):
+        return int(a) - int(b)
+`))
+	assert.NoError(t, err)
+	assert.Equal(t, "test - 3", s)
 }
 
 type testStruct struct {
