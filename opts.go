@@ -9,7 +9,8 @@ type jinja2Options struct {
 	SearchDirs []string       `json:"searchDirs"`
 	Globals    map[string]any `json:"globals"`
 
-	Extensions []string `json:"extensions"`
+	Filters    map[string]string `json:"filters"`
+	Extensions []string          `json:"extensions"`
 
 	// not passed to renderer
 	pythonPath       []string
@@ -78,6 +79,32 @@ func WithGlobals(globals map[string]any) Jinja2Opt {
 		for k, v := range globals {
 			o.Globals[k] = v
 		}
+	}
+}
+
+// WithFilter adds a custom filter with `name` to the engine
+//
+// name: the name of the filter
+// code: the code defines a filter function
+//
+// By default, name of the defined function should be same as the filter name.
+// You can change this behaviour to set your filter name to 'xxx:yyy' format,
+// then the real filter name is 'xxx' and the function name is 'yyy'.
+//
+// For example, you can use
+//
+//	WithFilter("add", "def add(x, y): return x + y")
+//
+// And also, you can use
+//
+//	WithFilter("add:my_add", "def my_add(x, y): return x + y")
+func WithFilter(name string, code string) Jinja2Opt {
+	return func(o *jinja2Options) {
+		if o.Filters == nil {
+			o.Filters = make(map[string]string)
+		}
+
+		o.Filters[name] = code
 	}
 }
 

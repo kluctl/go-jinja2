@@ -44,6 +44,23 @@ class Jinja2Renderer:
         for e in self.opts.get("extensions", []):
             environment.add_extension(e)
 
+        for name, code in self.opts.get("filters", {}).items():
+            track = {}
+            exec(code, track)
+            i = name.find(":")
+            if i != -1:
+                funcname = name[i + 1:]
+                name = name[:i]
+            else:
+                funcname = name
+
+            f = track.get(funcname)
+
+            if f is None or not callable(f):
+                raise AttributeError(f"function {funcname} is not found in filter code")
+
+            environment.filters[name] = f
+
         return environment, root_loader
 
     def render_helper(self, templates, is_string):
