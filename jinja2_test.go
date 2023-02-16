@@ -118,6 +118,13 @@ def add(a, b):
 `))
 	assert.NoError(t, err)
 	assert.Equal(t, "test - 3", s)
+
+	s, err = j2.RenderString("test - {{ test_var2.test | mul(3) }}", WithFilter("mul:multiply", `
+def multiply(a, b):
+	return int(a) * int(b)
+`))
+	assert.NoError(t, err)
+	assert.Equal(t, "test - 6", s)
 }
 
 type testStruct struct {
