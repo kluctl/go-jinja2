@@ -69,7 +69,7 @@ class VarNotFoundException(Exception):
 
 
 @jinja2.pass_context
-def get_var(ctx, path, default):
+def get_var(ctx, path, default=None):
     if not isinstance(path, list):
         path = [path]
     for p in path:
