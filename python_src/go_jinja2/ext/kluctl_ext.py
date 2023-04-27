@@ -45,10 +45,13 @@ def render(ctx, string):
     return t.render(ctx.parent)
 
 
-def sha256(s):
+def sha256(s, digest_len=None):
     if not isinstance(s, bytes):
         s = s.encode("utf-8")
-    return hashlib.sha256(s).hexdigest()
+    hash = hashlib.sha256(s).hexdigest()
+    if digest_len is not None:
+        hash = hash[:digest_len]
+    return hash
 
 
 def slugify(s, allow_unicode=False):

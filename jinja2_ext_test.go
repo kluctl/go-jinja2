@@ -29,3 +29,17 @@ func TestToYaml(t *testing.T) {
 		})
 	}
 }
+
+func TestSha256(t *testing.T) {
+	j2 := newJinja2(t)
+	s, err := j2.RenderString("{{ 'test' | sha256 }}")
+	assert.NoError(t, err)
+	assert.Equal(t, "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08", s)
+}
+
+func TestSha256PrefixLength(t *testing.T) {
+	j2 := newJinja2(t)
+	s, err := j2.RenderString("{{ 'test' | sha256(6) }}")
+	assert.NoError(t, err)
+	assert.Equal(t, "9f86d0", s)
+}
