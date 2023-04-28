@@ -114,6 +114,36 @@ func TestRenderDirectoryTemplateIgnore(t *testing.T) {
 			subdir:     "d1",
 			ignoreRoot: ".",
 		},
+		{
+			name: "reinclude /d1/f1.yaml",
+			files: map[string]string{
+				"f1.yaml":         `{{ "a" }}`,
+				"f2.yaml":         `{{ "a" }}`,
+				"d1/f1.yaml":      `{{ "a" }}`,
+				".templateignore": "f1.yaml\n!d1/f1.yaml",
+			},
+			r: map[string]string{
+				"f1.yaml":         `{{ "a" }}`,
+				"f2.yaml":         `a`,
+				"d1/f1.yaml":      `a`,
+				".templateignore": "f1.yaml\n!d1/f1.yaml",
+			},
+		},
+		{
+			name: "complex reinclude",
+			files: map[string]string{
+				"d1/some/renderThese/f1.yaml": `{{ "a" }}`,
+				"d1/some/renderThese/f2.txt":  `{{ "a" }}`,
+				"d1/some/f2.yaml":             `{{ "a" }}`,
+				".templateignore":             "**/some/**/*.*\n!**/some/renderThese/*.y*ml",
+			},
+			r: map[string]string{
+				"d1/some/renderThese/f1.yaml": `a`,
+				"d1/some/renderThese/f2.txt":  `{{ "a" }}`,
+				"d1/some/f2.yaml":             `{{ "a" }}`,
+				".templateignore":             "**/some/**/*.*\n!**/some/renderThese/*.y*ml",
+			},
+		},
 	}
 
 	j2 := newJinja2(t)
