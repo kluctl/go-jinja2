@@ -13,9 +13,10 @@ type jinja2Options struct {
 	Extensions []string          `json:"extensions"`
 
 	// not passed to renderer
-	pythonPath       []string
-	traceJsonSend    func(map[string]any)
-	traceJsonReceive func(map[string]any)
+	pythonPath             []string
+	templateIgnoreRootPath string
+	traceJsonSend          func(map[string]any)
+	traceJsonReceive       func(map[string]any)
 }
 
 type Jinja2Opt func(o *jinja2Options)
@@ -79,6 +80,12 @@ func WithGlobals(globals map[string]any) Jinja2Opt {
 		for k, v := range globals {
 			o.Globals[k] = v
 		}
+	}
+}
+
+func WithTemplateIgnoreRootDir(dir string) Jinja2Opt {
+	return func(o *jinja2Options) {
+		o.templateIgnoreRootPath = dir
 	}
 }
 
