@@ -14,7 +14,7 @@ const (
 )
 
 // readIgnoreFile reads a specific git ignore file.
-func (j *Jinja2) readIgnoreFile(path string, domainIn []string) (ps []gitignore.Pattern, err error) {
+func (j *Jinja2) readIgnoreFile(path string, domainIn []string) ([]gitignore.Pattern, error) {
 	domain := make([]string, len(domainIn))
 	copy(domain, domainIn)
 
@@ -22,35 +22,36 @@ func (j *Jinja2) readIgnoreFile(path string, domainIn []string) (ps []gitignore.
 	if err == nil {
 		defer f.Close()
 
+		var ret []gitignore.Pattern
+
 		scanner := bufio.NewScanner(f)
 		for scanner.Scan() {
 			s := scanner.Text()
 			if !strings.HasPrefix(s, commentPrefix) && len(strings.TrimSpace(s)) > 0 {
-				ps = append(ps, gitignore.ParsePattern(s, domain))
+				ret = append(ret, gitignore.ParsePattern(s, domain))
 			}
 		}
-	} else if !os.IsNotExist(err) {
-		return nil, err
+		return ret, nil
+	} else if os.IsNotExist(err) {
+		return nil, nil
 	}
-
-	return
+	return nil, err
 }
 
 // readPatternsRecursive reads gitignore patterns recursively traversing through the directory
 // structure. The result is in the ascending order of priority (last higher).
-func (j *Jinja2) readPatternsRecursive(rootDir string, domain []string) (ps []gitignore.Pattern, err error) {
+func (j *Jinja2) readPatternsRecursive(rootDir string, domain []string) ([]gitignore.Pattern, error) {
 	path := filepath.Join(rootDir, filepath.Join(domain...), templateIgnoreFile)
-	ps, _ = j.readIgnoreFile(path, domain)
+	ps, _ := j.readIgnoreFile(path, domain)
 
 	pd := domain
 	if len(domain) == 0 {
 		pd = []string{"."}
 	}
 
-	var fis []os.DirEntry
-	fis, err = os.ReadDir(filepath.Join(rootDir, filepath.Join(pd...)))
+	fis, err := os.ReadDir(filepath.Join(rootDir, filepath.Join(pd...)))
 	if err != nil {
-		return
+		return nil, err
 	}
 
 	domain2 := make([]string, len(domain)+1)
@@ -63,7 +64,7 @@ func (j *Jinja2) readPatternsRecursive(rootDir string, domain []string) (ps []gi
 			var subps []gitignore.Pattern
 			subps, err = j.readPatternsRecursive(rootDir, domain2)
 			if err != nil {
-				return
+				return nil, err
 			}
 
 			if len(subps) > 0 {
@@ -72,7 +73,7 @@ func (j *Jinja2) readPatternsRecursive(rootDir string, domain []string) (ps []gi
 		}
 	}
 
-	return
+	return ps, nil
 }
 
 func (j *Jinja2) readAllIgnoreFiles(rootDir string, subdir string, excludePatterns []string) ([]gitignore.Pattern, error) {
