@@ -80,7 +80,7 @@ func (j *Jinja2) readAllIgnoreFiles(rootDir string, subdir string, excludePatter
 	var ret []gitignore.Pattern
 	var domain []string
 	var subDir2 string
-	if subdir != "" {
+	if subdir != "" && subdir != "." {
 		for _, e := range strings.Split(subdir, string(filepath.Separator)) {
 			x, err := j.readIgnoreFile(filepath.Join(rootDir, subDir2, templateIgnoreFile), domain)
 			if err != nil {
