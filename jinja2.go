@@ -9,6 +9,7 @@ import (
 	"github.com/kluctl/go-embed-python/python"
 	"github.com/kluctl/go-jinja2/internal/data"
 	"github.com/kluctl/go-jinja2/python_src"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"strings"
@@ -203,6 +204,7 @@ func (j *Jinja2) RenderDirectory(sourceDir string, targetDir string, excludePatt
 
 	ignoreMatcher := gitignore.NewMatcher(ignore)
 
+	symlinks := map[string]string{}
 	err = filepath.WalkDir(sourceDir, func(p string, d os.DirEntry, err error) error {
 		if err != nil {
 			return err
@@ -215,7 +217,14 @@ func (j *Jinja2) RenderDirectory(sourceDir string, targetDir string, excludePatt
 
 		targetPath := filepath.Join(targetDir, relPath)
 
-		if d.IsDir() {
+		if d.Type() == fs.ModeSymlink {
+			lnk, err := os.Readlink(p)
+			if err != nil {
+				return err
+			}
+			symlinks[targetPath] = lnk
+			return nil
+		} else if d.IsDir() {
 			err = os.MkdirAll(targetPath, 0o700)
 			if err != nil {
 				return err
@@ -267,5 +276,16 @@ func (j *Jinja2) RenderDirectory(sourceDir string, targetDir string, excludePatt
 			return err
 		}
 	}
-	return retErr.ErrorOrNil()
+	if retErr.ErrorOrNil() != nil {
+		return retErr
+	}
+
+	for n, o := range symlinks {
+		err = os.Symlink(o, n)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
