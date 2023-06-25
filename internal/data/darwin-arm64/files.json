@@ -1,5 +1,5 @@
 {
-  "contentHash": "e013e94e7059302b459668db03d56a95f83b108b0396878623e3c4f25dec8e25",
+  "contentHash": "d5749ee20dfcd70242f08398e8fe426423e6bac00f6c899dc7fb816897bee925",
   "files": [
     {
       "name": "Jinja2-3.1.2.dist-info",
@@ -47,37 +47,42 @@
       "perm": 420
     },
     {
-      "name": "MarkupSafe-2.1.2.dist-info",
+      "name": "MarkupSafe-2.1.3.dist-info",
       "size": 0,
       "perm": 2147484141
     },
     {
-      "name": "MarkupSafe-2.1.2.dist-info/INSTALLER",
+      "name": "MarkupSafe-2.1.3.dist-info/INSTALLER",
       "size": 4,
       "perm": 420
     },
     {
-      "name": "MarkupSafe-2.1.2.dist-info/LICENSE.rst",
+      "name": "MarkupSafe-2.1.3.dist-info/LICENSE.rst",
       "size": 1475,
       "perm": 420
     },
     {
-      "name": "MarkupSafe-2.1.2.dist-info/METADATA",
-      "size": 3222,
+      "name": "MarkupSafe-2.1.3.dist-info/METADATA",
+      "size": 3003,
       "perm": 420
     },
     {
-      "name": "MarkupSafe-2.1.2.dist-info/RECORD",
-      "size": 1099,
+      "name": "MarkupSafe-2.1.3.dist-info/RECORD",
+      "size": 1191,
       "perm": 420
     },
     {
-      "name": "MarkupSafe-2.1.2.dist-info/WHEEL",
+      "name": "MarkupSafe-2.1.3.dist-info/REQUESTED",
+      "size": 0,
+      "perm": 420
+    },
+    {
+      "name": "MarkupSafe-2.1.3.dist-info/WHEEL",
       "size": 115,
       "perm": 420
     },
     {
-      "name": "MarkupSafe-2.1.2.dist-info/top_level.txt",
+      "name": "MarkupSafe-2.1.3.dist-info/top_level.txt",
       "size": 11,
       "perm": 420
     },
@@ -588,7 +593,7 @@
     },
     {
       "name": "markupsafe/__init__.py",
-      "size": 9306,
+      "size": 10338,
       "perm": 420
     },
     {
