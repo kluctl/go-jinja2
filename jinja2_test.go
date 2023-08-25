@@ -198,6 +198,27 @@ func TestRenderFiles(t *testing.T) {
 	assert.Equal(t, "b", r2)
 }
 
+func TestRenderRelativeFiles(t *testing.T) {
+	j2 := newJinja2(t)
+
+	d := newTemplateDir(t, map[string]string{
+		"template":        "{{ a }}",
+		"subdir/template": "{{ b }}",
+	})
+
+	r1, err := j2.RenderFile("template", WithSearchDirs([]string{d}), WithGlobal("a", "a"))
+	assert.NoError(t, err)
+	assert.Equal(t, "a", r1)
+
+	r2, err := j2.RenderFile("template", WithSearchDirs([]string{filepath.Join(d, "subdir")}), WithGlobal("b", "b"))
+	assert.NoError(t, err)
+	assert.Equal(t, "b", r2)
+
+	r3, err := j2.RenderFile("../template", WithSearchDirs([]string{filepath.Join(d, "subdir")}), WithGlobal("a", "b"))
+	assert.NoError(t, err)
+	assert.Equal(t, "b", r3)
+}
+
 func TestRenderFiles_Includes(t *testing.T) {
 	includeDir := newTemplateDir(t, map[string]string{
 		"include.yaml":        "test",
