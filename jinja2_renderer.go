@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"github.com/jinzhu/copier"
 	"io"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -88,6 +87,24 @@ func (j *pythonJinja2Renderer) Close() {
 	}
 }
 
+func (j *pythonJinja2Renderer) resolveAbsolutePath(template string, searchDirs []string) (string, bool) {
+	if filepath.IsAbs(template) {
+		return template, true
+	}
+	for _, s := range searchDirs {
+		p := filepath.Join(s, template)
+		st, err := os.Stat(p)
+		if err != nil {
+			continue
+		}
+		if !st.Mode().IsRegular() {
+			continue
+		}
+		return p, true
+	}
+	return "", false
+}
+
 func isMaybeTemplateString(template string) bool {
 	return strings.IndexRune(template, '{') != -1
 }
@@ -96,23 +113,21 @@ func isMaybeTemplateBytes(template []byte) bool {
 	return bytes.IndexRune(template, '{') != -1
 }
 
-func isMaybeTemplate(template string, searchDirs []string, isString bool) (bool, *string) {
+func isMaybeTemplate(template string, isString bool) (bool, *string) {
 	if isString {
 		if !isMaybeTemplateString(template) {
 			return false, &template
 		}
 	} else {
-		for _, s := range searchDirs {
-			b, err := ioutil.ReadFile(filepath.Join(s, template))
-			if err != nil {
-				continue
-			}
-			if !isMaybeTemplateBytes(b) {
-				x := string(b)
-				return false, &x
-			} else {
-				return true, nil
-			}
+		b, err := os.ReadFile(template)
+		if err != nil {
+			return false, nil
+		}
+		if !isMaybeTemplateBytes(b) {
+			x := string(b)
+			return false, &x
+		} else {
+			return true, nil
 		}
 	}
 	return true, nil
@@ -153,12 +168,22 @@ func (j *pythonJinja2Renderer) renderHelper(jobs []*RenderJob, isString bool, op
 	var processedJobs []*RenderJob
 
 	for _, job := range jobs {
-		if ist, r := isMaybeTemplate(job.Template, jargs.Opts.SearchDirs, isString); !ist {
+		t := job.Template
+		if !isString {
+			p, ok := j.resolveAbsolutePath(t, jargs.Opts.SearchDirs)
+			if !ok {
+				job.Error = fmt.Errorf("absolute path of %s could not be resolved", t)
+				continue
+			}
+			t = p
+		}
+
+		if ist, r := isMaybeTemplate(t, isString); !ist {
 			job.Result = r
 			continue
 		}
 		processedJobs = append(processedJobs, job)
-		jargs.Templates = append(jargs.Templates, job.Template)
+		jargs.Templates = append(jargs.Templates, t)
 	}
 	if len(processedJobs) == 0 {
 		return nil
