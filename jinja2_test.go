@@ -25,14 +25,11 @@ func newJinja2(t *testing.T, opts ...Jinja2Opt) *Jinja2 {
 }
 
 func newTemplateFile(t *testing.T, content string) string {
-	tmpFile, err := os.CreateTemp("", "test-template-")
+	tmpFile, err := os.CreateTemp(t.TempDir(), "test-template-")
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Cleanup(func() {
-		tmpFile.Close()
-		_ = os.Remove(tmpFile.Name())
-	})
+	defer tmpFile.Close()
 	_, err = tmpFile.Write([]byte(content))
 	if err != nil {
 		t.Fatal(err)
