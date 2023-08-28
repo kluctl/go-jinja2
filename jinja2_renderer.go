@@ -113,24 +113,24 @@ func isMaybeTemplateBytes(template []byte) bool {
 	return bytes.IndexRune(template, '{') != -1
 }
 
-func isMaybeTemplate(template string, isString bool) (bool, *string) {
+func isMaybeTemplate(template string, isString bool) (bool, *string, error) {
 	if isString {
 		if !isMaybeTemplateString(template) {
-			return false, &template
+			return false, &template, nil
 		}
 	} else {
 		b, err := os.ReadFile(template)
 		if err != nil {
-			return false, nil
+			return false, nil, err
 		}
 		if !isMaybeTemplateBytes(b) {
 			x := string(b)
-			return false, &x
+			return false, &x, nil
 		} else {
-			return true, nil
+			return true, nil, nil
 		}
 	}
-	return true, nil
+	return true, nil, nil
 }
 
 type jinja2Args struct {
@@ -178,10 +178,12 @@ func (j *pythonJinja2Renderer) renderHelper(jobs []*RenderJob, isString bool, op
 			t = p
 		}
 
-		if ist, r := isMaybeTemplate(t, isString); !ist {
+		ist, r, err := isMaybeTemplate(t, isString)
+		if err == nil && !ist {
 			job.Result = r
 			continue
 		}
+
 		processedJobs = append(processedJobs, job)
 		jargs.Templates = append(jargs.Templates, t)
 	}
