@@ -7,7 +7,7 @@ require (
 	github.com/gobwas/glob v0.2.3
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/jinzhu/copier v0.4.0
-	github.com/kluctl/go-embed-python v0.0.0-3.11.6-20231002-1
+	github.com/kluctl/go-embed-python v0.0.0-3.12.0-20231002-3
 	github.com/stretchr/testify v1.8.4
 )
 
