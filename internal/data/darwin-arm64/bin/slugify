@@ -1,4 +1,4 @@
-#!/tmp/python-pip-darwin-arm64-macosx_11_0_arm64/bin/python3
+#!/tmp/python-pip-darwin-arm64/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

@@ -3,10 +3,10 @@ Name: PyYAML
 Version: 6.0
 Summary: YAML parser and emitter for Python
 Home-page: https://pyyaml.org/
+Download-URL: https://pypi.org/project/PyYAML/
 Author: Kirill Simonov
 Author-email: xi@resolvent.net
 License: MIT
-Download-URL: https://pypi.org/project/PyYAML/
 Project-URL: Bug Tracker, https://github.com/yaml/pyyaml/issues
 Project-URL: CI, https://github.com/yaml/pyyaml/actions
 Project-URL: Documentation, https://pyyaml.org/wiki/PyYAMLDocumentation
@@ -25,6 +25,7 @@ Classifier: Programming Language :: Python :: 3.7
 Classifier: Programming Language :: Python :: 3.8
 Classifier: Programming Language :: Python :: 3.9
 Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
 Classifier: Programming Language :: Python :: Implementation :: CPython
 Classifier: Programming Language :: Python :: Implementation :: PyPy
 Classifier: Topic :: Software Development :: Libraries :: Python Modules
@@ -43,4 +44,3 @@ allow to represent an arbitrary Python object.
 
 PyYAML is applicable for a broad range of tasks from complex
 configuration files to object serialization and persistence.
-

@@ -1,5 +1,5 @@
 {
-  "contentHash": "01786c332436d4995974ad9313ad4a43496cde22ce9a9b5b55aeb0739cce2b3c",
+  "contentHash": "145e337d767419dff0b1ba88a9040c4cb77bb1f2b830b118af22d9787891c971",
   "files": [
     {
       "name": "Jinja2-3.1.2.dist-info",
@@ -103,7 +103,7 @@
     },
     {
       "name": "PyYAML-6.0.dist-info/METADATA",
-      "size": 2006,
+      "size": 2056,
       "perm": 420
     },
     {
@@ -143,12 +143,12 @@
     },
     {
       "name": "bin/jsonpath_ng",
-      "size": 272,
+      "size": 262,
       "perm": 493
     },
     {
       "name": "bin/slugify",
-      "size": 250,
+      "size": 240,
       "perm": 493
     },
     {
@@ -607,7 +607,7 @@
       "perm": 420
     },
     {
-      "name": "markupsafe/_speedups.cp310-win_amd64.pyd",
+      "name": "markupsafe/_speedups.cp311-win_amd64.pyd",
       "size": 15872,
       "perm": 420,
       "compressed": true
@@ -884,8 +884,8 @@
       "perm": 420
     },
     {
-      "name": "yaml/_yaml.cp310-win_amd64.pyd",
-      "size": 249856,
+      "name": "yaml/_yaml.cp311-win_amd64.pyd",
+      "size": 229376,
       "perm": 420,
       "compressed": true
     },
