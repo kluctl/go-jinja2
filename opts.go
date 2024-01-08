@@ -14,6 +14,7 @@ type jinja2Options struct {
 
 	// not passed to renderer
 	pythonPath             []string
+	embeddedExtractDir     string
 	templateIgnoreRootPath string
 	traceJsonSend          func(map[string]any)
 	traceJsonReceive       func(map[string]any)
@@ -30,6 +31,12 @@ func WithDebugTrace(debugTrace bool) Jinja2Opt {
 func WithPythonPath(p string) Jinja2Opt {
 	return func(o *jinja2Options) {
 		o.pythonPath = append(o.pythonPath, p)
+	}
+}
+
+func WithEmbeddedExtractDir(p string) Jinja2Opt {
+	return func(o *jinja2Options) {
+		o.embeddedExtractDir = p
 	}
 }
 

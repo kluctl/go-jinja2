@@ -18,9 +18,11 @@ import (
 
 type Jinja2 struct {
 	ep          *python.EmbeddedPython
+	extractDir  string
 	jinja2Lib   *embed_util.EmbeddedFiles
 	rendererSrc *embed_util.EmbeddedFiles
 
+	name        string
 	parallelism int
 	pj          chan *pythonJinja2Renderer
 	globCache   map[string]interface{}
@@ -51,28 +53,35 @@ func NewJinja2(name string, parallelism int, opts ...Jinja2Opt) (*Jinja2, error)
 	var err error
 
 	j2 := &Jinja2{
+		name:        name,
 		parallelism: parallelism,
 		globCache:   map[string]interface{}{},
 		pj:          make(chan *pythonJinja2Renderer, parallelism),
 	}
 
+	for _, o := range opts {
+		o(&j2.defaultOptions)
+	}
+
+	tmpDir := j2.defaultOptions.embeddedExtractDir
+	if tmpDir == "" {
+		tmpDir = filepath.Join(os.TempDir(), "go-jinja2-embedded")
+	}
+	tmpDir = filepath.Join(tmpDir, name)
+
 	j2.ep, err = python.NewEmbeddedPython(name)
 	if err != nil {
 		return nil, err
 	}
-	j2.jinja2Lib, err = embed_util.NewEmbeddedFiles(data.Data, name)
+	j2.jinja2Lib, err = embed_util.NewEmbeddedFilesWithTmpDir(data.Data, tmpDir+"-python", true)
 	if err != nil {
 		return nil, err
 	}
 	j2.ep.AddPythonPath(j2.jinja2Lib.GetExtractedPath())
 
-	j2.rendererSrc, err = embed_util.NewEmbeddedFiles(python_src.RendererSource, name)
+	j2.rendererSrc, err = embed_util.NewEmbeddedFilesWithTmpDir(python_src.RendererSource, tmpDir+"-renderer", true)
 	if err != nil {
 		return nil, err
-	}
-
-	for _, o := range opts {
-		o(&j2.defaultOptions)
 	}
 
 	for _, p := range j2.defaultOptions.pythonPath {

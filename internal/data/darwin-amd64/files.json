@@ -1,5 +1,5 @@
 {
-  "contentHash": "a26581e68cd807ca7def2090f5fe07f6ef6a53988390021d9bb75e99f52880ee",
+  "contentHash": "9d4ef9de6d411b1b5e051dbb386020e8ab3644830700c49dbcf50e1d2e88c822",
   "files": [
     {
       "name": "Jinja2-3.1.2.dist-info",
@@ -103,7 +103,7 @@
     },
     {
       "name": "PyYAML-6.0.dist-info/METADATA",
-      "size": 2006,
+      "size": 2056,
       "perm": 420
     },
     {
@@ -143,12 +143,12 @@
     },
     {
       "name": "bin/jsonpath_ng",
-      "size": 280,
+      "size": 261,
       "perm": 493
     },
     {
       "name": "bin/slugify",
-      "size": 258,
+      "size": 239,
       "perm": 493
     },
     {
@@ -607,8 +607,8 @@
       "perm": 420
     },
     {
-      "name": "markupsafe/_speedups.cpython-310-darwin.so",
-      "size": 35160,
+      "name": "markupsafe/_speedups.cpython-311-darwin.so",
+      "size": 35272,
       "perm": 493,
       "compressed": true
     },
@@ -884,8 +884,8 @@
       "perm": 420
     },
     {
-      "name": "yaml/_yaml.cpython-310-darwin.so",
-      "size": 462168,
+      "name": "yaml/_yaml.cpython-311-darwin.so",
+      "size": 429464,
       "perm": 493,
       "compressed": true
     },

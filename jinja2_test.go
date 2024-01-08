@@ -445,3 +445,46 @@ func TestRenderDirectory(t *testing.T) {
 		})
 	}
 }
+
+func TestCustomTmpDir(t *testing.T) {
+	tmpDir := t.TempDir()
+
+	// first, test without WithEmbeddedExtractDir
+	j2 := newJinja2(t, WithGlobals(map[string]any{
+		"test_var1": "1",
+		"test_var2": map[string]any{
+			"test": "2",
+		},
+	}))
+	m, err := filepath.Glob(filepath.Join(os.TempDir(), "go-jinja2-embedded", j2.name+"-python-*"))
+	assert.NoError(t, err)
+	assert.Len(t, m, 2) // dir + .lock
+	m, err = filepath.Glob(filepath.Join(os.TempDir(), "go-jinja2-embedded", j2.name+"-renderer-*"))
+	assert.NoError(t, err)
+	assert.Len(t, m, 2) // dir + .lock
+
+	// and now with WithEmbeddedExtractDir
+	j2 = newJinja2(t, WithGlobals(map[string]any{
+		"test_var1": "1",
+		"test_var2": map[string]any{
+			"test": "2",
+		},
+	}), WithEmbeddedExtractDir(tmpDir))
+	m, err = filepath.Glob(filepath.Join(os.TempDir(), "go-jinja2-embedded", j2.name+"-python-*"))
+	assert.NoError(t, err)
+	assert.Len(t, m, 0)
+	m, err = filepath.Glob(filepath.Join(os.TempDir(), "go-jinja2-embedded", j2.name+"-renderer-*"))
+	assert.NoError(t, err)
+	assert.Len(t, m, 0)
+	m, err = filepath.Glob(filepath.Join(tmpDir, j2.name+"-python-*"))
+	assert.NoError(t, err)
+	assert.Len(t, m, 2) // dir + .lock
+	m, err = filepath.Glob(filepath.Join(tmpDir, j2.name+"-renderer-*"))
+	assert.NoError(t, err)
+	assert.Len(t, m, 2) // dir + .lock
+
+	// now check if it is functional
+	s, err := j2.RenderString("test")
+	assert.NoError(t, err)
+	assert.Equal(t, "test", s)
+}
