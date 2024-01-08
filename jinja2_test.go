@@ -459,7 +459,10 @@ func TestCustomTmpDir(t *testing.T) {
 	m, err := filepath.Glob(filepath.Join(os.TempDir(), "go-jinja2-embedded", j2.name+"-python-*"))
 	assert.NoError(t, err)
 	assert.Len(t, m, 2) // dir + .lock
-	m, err = filepath.Glob(filepath.Join(os.TempDir(), "go-jinja2-embedded", j2.name+"-renderer-*"))
+	m, err = filepath.Glob(filepath.Join(os.TempDir(), "go-jinja2-embedded", j2.name+"-jinja2-lib-*"))
+	assert.NoError(t, err)
+	assert.Len(t, m, 2) // dir + .lock
+	m, err = filepath.Glob(filepath.Join(os.TempDir(), "go-jinja2-embedded", j2.name+"-jinja2-renderer-*"))
 	assert.NoError(t, err)
 	assert.Len(t, m, 2) // dir + .lock
 
@@ -473,13 +476,19 @@ func TestCustomTmpDir(t *testing.T) {
 	m, err = filepath.Glob(filepath.Join(os.TempDir(), "go-jinja2-embedded", j2.name+"-python-*"))
 	assert.NoError(t, err)
 	assert.Len(t, m, 0)
-	m, err = filepath.Glob(filepath.Join(os.TempDir(), "go-jinja2-embedded", j2.name+"-renderer-*"))
+	m, err = filepath.Glob(filepath.Join(os.TempDir(), "go-jinja2-embedded", j2.name+"-jinja2-lib-*"))
+	assert.NoError(t, err)
+	assert.Len(t, m, 0)
+	m, err = filepath.Glob(filepath.Join(os.TempDir(), "go-jinja2-embedded", j2.name+"-jinja2-renderer-*"))
 	assert.NoError(t, err)
 	assert.Len(t, m, 0)
 	m, err = filepath.Glob(filepath.Join(tmpDir, j2.name+"-python-*"))
 	assert.NoError(t, err)
 	assert.Len(t, m, 2) // dir + .lock
-	m, err = filepath.Glob(filepath.Join(tmpDir, j2.name+"-renderer-*"))
+	m, err = filepath.Glob(filepath.Join(tmpDir, j2.name+"-jinja2-lib-*"))
+	assert.NoError(t, err)
+	assert.Len(t, m, 2) // dir + .lock
+	m, err = filepath.Glob(filepath.Join(tmpDir, j2.name+"-jinja2-renderer-*"))
 	assert.NoError(t, err)
 	assert.Len(t, m, 2) // dir + .lock
 
