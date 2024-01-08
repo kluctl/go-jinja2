@@ -15,7 +15,9 @@ def main():
         r = Jinja2Renderer(opts)
 
         result = {}
-        if cmd["cmd"] == "render-strings":
+        if cmd["cmd"] == "init":
+            pass
+        elif cmd["cmd"] == "render-strings":
             result = {
                 "templateResults": r.RenderStrings(cmd["templates"])
             }

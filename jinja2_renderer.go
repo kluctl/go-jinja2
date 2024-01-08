@@ -58,6 +58,13 @@ func newPythonJinja2Renderer(j2 *Jinja2) (*pythonJinja2Renderer, error) {
 
 	j2r.stdoutReader = bufio.NewReader(j2r.stdout)
 
+	_, err = j2r.runCmd(&jinja2Cmd{
+		Cmd: "init",
+	})
+	if err != nil {
+		return nil, fmt.Errorf("failed to initialize renderer: %w", err)
+	}
+
 	isOk = true
 
 	return j2r, nil
