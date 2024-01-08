@@ -65,7 +65,7 @@ func newPythonJinja2Renderer(j2 *Jinja2) (*pythonJinja2Renderer, error) {
 
 func (j *pythonJinja2Renderer) Close() {
 	if j.stdin != nil {
-		args := jinja2Args{Cmd: "exit"}
+		args := jinja2Cmd{Cmd: "exit"}
 		_ = json.NewEncoder(j.stdin).Encode(args)
 
 		_ = j.stdin.Close()
@@ -133,20 +133,24 @@ func isMaybeTemplate(template string, isString bool) (bool, *string, error) {
 	return true, nil, nil
 }
 
-type jinja2Args struct {
+type jinja2Cmd struct {
 	Cmd       string   `json:"cmd"`
 	Templates []string `json:"templates"`
 
 	Opts *jinja2Options `json:"opts"`
 }
 
-type jinja2Result struct {
+type jinja2TemplateResult struct {
 	Result *string `json:"result,omitempty"`
 	Error  *string `json:"error,omitempty"`
 }
 
+type jinja2CmdResult struct {
+	TemplateResults []jinja2TemplateResult `json:"templateResults,omitempty"`
+}
+
 func (j *pythonJinja2Renderer) renderHelper(jobs []*RenderJob, isString bool, opts []Jinja2Opt) error {
-	var jargs jinja2Args
+	var jargs jinja2Cmd
 	if isString {
 		jargs.Cmd = "render-strings"
 	} else {
@@ -191,50 +195,12 @@ func (j *pythonJinja2Renderer) renderHelper(jobs []*RenderJob, isString bool, op
 		return nil
 	}
 
-	b, err := json.Marshal(jargs)
-	if err != nil {
-		j.Close()
-		return err
-	}
-	b = append(b, '\n')
-
-	if jargs.Opts.traceJsonSend != nil {
-		var m map[string]any
-		_ = json.Unmarshal(b, &m)
-		jargs.Opts.traceJsonSend(m)
-	}
-
-	_, err = j.stdin.Write(b)
-	if err != nil {
-		j.Close()
-		return err
-	}
-
-	line := bytes.NewBuffer(nil)
-	for true {
-		l, p, err := j.stdoutReader.ReadLine()
-		if err != nil {
-			return err
-		}
-		line.Write(l)
-		if !p {
-			break
-		}
-	}
-
-	if jargs.Opts.traceJsonReceive != nil {
-		var m map[string]any
-		_ = json.Unmarshal(line.Bytes(), &m)
-		jargs.Opts.traceJsonReceive(m)
-	}
-
-	var result []jinja2Result
-	err = json.Unmarshal(line.Bytes(), &result)
+	cmdResult, err := j.runCmd(&jargs)
 	if err != nil {
 		return err
 	}
 
-	for i, item := range result {
+	for i, item := range cmdResult.TemplateResults {
 		if item.Result != nil {
 			processedJobs[i].Result = item.Result
 		} else {
@@ -246,4 +212,51 @@ func (j *pythonJinja2Renderer) renderHelper(jobs []*RenderJob, isString bool, op
 	}
 
 	return nil
+}
+
+func (j *pythonJinja2Renderer) runCmd(jargs *jinja2Cmd) (*jinja2CmdResult, error) {
+	b, err := json.Marshal(jargs)
+	if err != nil {
+		j.Close()
+		return nil, err
+	}
+	b = append(b, '\n')
+
+	if jargs.Opts != nil && jargs.Opts.traceJsonSend != nil {
+		var m map[string]any
+		_ = json.Unmarshal(b, &m)
+		jargs.Opts.traceJsonSend(m)
+	}
+
+	_, err = j.stdin.Write(b)
+	if err != nil {
+		j.Close()
+		return nil, err
+	}
+
+	line := bytes.NewBuffer(nil)
+	for true {
+		l, p, err := j.stdoutReader.ReadLine()
+		if err != nil {
+			return nil, err
+		}
+		line.Write(l)
+		if !p {
+			break
+		}
+	}
+
+	if jargs.Opts != nil && jargs.Opts.traceJsonReceive != nil {
+		var m map[string]any
+		_ = json.Unmarshal(line.Bytes(), &m)
+		jargs.Opts.traceJsonReceive(m)
+	}
+
+	var result jinja2CmdResult
+	err = json.Unmarshal(line.Bytes(), &result)
+	if err != nil {
+		return nil, err
+	}
+
+	return &result, nil
 }
