@@ -6,19 +6,26 @@ from go_jinja2.jinja2_renderer import Jinja2Renderer
 
 def main():
     while True:
-        args = sys.stdin.readline()
-        if not args:
+        cmd = sys.stdin.readline()
+        if not cmd:
             break
-        args = json.loads(args)
-        opts = args["opts"]
+        cmd = json.loads(cmd)
+        opts = cmd["opts"]
 
         r = Jinja2Renderer(opts)
 
-        if args["cmd"] == "render-strings":
-            result = r.RenderStrings(args["templates"])
-        elif args["cmd"] == "render-files":
-            result = r.RenderFiles(args["templates"])
-        elif args["cmd"] == "exit":
+        result = {}
+        if cmd["cmd"] == "init":
+            pass
+        elif cmd["cmd"] == "render-strings":
+            result = {
+                "templateResults": r.RenderStrings(cmd["templates"])
+            }
+        elif cmd["cmd"] == "render-files":
+            result = {
+                "templateResults": r.RenderFiles(cmd["templates"])
+            }
+        elif cmd["cmd"] == "exit":
             break
         else:
             raise Exception("invalid cmd")

@@ -69,17 +69,17 @@ func NewJinja2(name string, parallelism int, opts ...Jinja2Opt) (*Jinja2, error)
 	}
 	tmpDir = filepath.Join(tmpDir, name)
 
-	j2.ep, err = python.NewEmbeddedPython(name)
+	j2.ep, err = python.NewEmbeddedPythonWithTmpDir(tmpDir+"-python", true)
 	if err != nil {
 		return nil, err
 	}
-	j2.jinja2Lib, err = embed_util.NewEmbeddedFilesWithTmpDir(data.Data, tmpDir+"-python", true)
+	j2.jinja2Lib, err = embed_util.NewEmbeddedFilesWithTmpDir(data.Data, tmpDir+"-jinja2-lib", true)
 	if err != nil {
 		return nil, err
 	}
 	j2.ep.AddPythonPath(j2.jinja2Lib.GetExtractedPath())
 
-	j2.rendererSrc, err = embed_util.NewEmbeddedFilesWithTmpDir(python_src.RendererSource, tmpDir+"-renderer", true)
+	j2.rendererSrc, err = embed_util.NewEmbeddedFilesWithTmpDir(python_src.RendererSource, tmpDir+"-jinja2-renderer", true)
 	if err != nil {
 		return nil, err
 	}
