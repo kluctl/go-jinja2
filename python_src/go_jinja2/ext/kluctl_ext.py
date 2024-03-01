@@ -42,7 +42,7 @@ def from_yaml(s):
 @jinja2.pass_context
 def render(ctx, string):
     t = ctx.environment.from_string(string)
-    return t.render(ctx.parent)
+    return t.render(ctx.get_all())
 
 
 def sha256(s, digest_len=None):
@@ -63,7 +63,7 @@ def slugify(s, allow_unicode=False):
 def load_template(ctx, path, **kwargs):
     ctx.environment.print_debug("load_template(%s)" % path)
     t = ctx.environment.get_template(path.replace(os.path.sep, '/'), parent=ctx.name)
-    vars = merge_dict(ctx.parent, kwargs)
+    vars = merge_dict(ctx.get_all(), kwargs)
     return t.render(vars)
 
 
@@ -75,8 +75,10 @@ class VarNotFoundException(Exception):
 def get_var(ctx, path, default=None):
     if not isinstance(path, list):
         path = [path]
+
+    all_vars = ctx.get_all()
     for p in path:
-        r = get_dict_value(ctx.parent, p, VarNotFoundException())
+        r = get_dict_value(all_vars, p, VarNotFoundException())
         if isinstance(r, VarNotFoundException):
             continue
         return r
