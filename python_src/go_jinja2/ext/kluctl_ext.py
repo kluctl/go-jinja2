@@ -41,6 +41,7 @@ def from_yaml(s):
 
 @jinja2.pass_context
 def render(ctx, string):
+    # TODO we should deprecate render being available as filter, as filters seem to not have access to local variables
     t = ctx.environment.from_string(string)
     return t.render(ctx.get_all())
 
@@ -116,6 +117,8 @@ def add_jinja2_filters(jinja2_env):
     jinja2_env.filters['to_yaml'] = to_yaml
     jinja2_env.filters['to_json'] = to_json
     jinja2_env.filters['from_yaml'] = from_yaml
+    # render is available as filter and as global function. The filter should be deprecated in the future as it is
+    # unable to access local variables
     jinja2_env.filters['render'] = render
     jinja2_env.filters['sha256'] = sha256
     jinja2_env.filters['slugify'] = slugify
@@ -126,3 +129,4 @@ def add_jinja2_filters(jinja2_env):
     jinja2_env.globals['raise'] = raise_helper
     jinja2_env.globals['debug_print'] = debug_print
     jinja2_env.globals['load_sha256'] = load_sha256
+    jinja2_env.globals['render'] = render

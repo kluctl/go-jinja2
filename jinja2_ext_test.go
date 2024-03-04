@@ -77,9 +77,13 @@ func TestGetVarAndRender(t *testing.T) {
 		{tmpl: "{% set loc = 'l1' %}{{ get_var('loc') }}", result: "l1"},
 		// TODO test for this when https://github.com/pallets/jinja/issues/1478 gets fixed
 		// {tmpl: "{% for e in list %}{{ get_var('e.x') }}{% endfor %}", result: ""},
+		// same is before, but with a workaround to make 'e' a local variable
+		{tmpl: "{% for e in list %}{% set e=e %}{{ get_var('e.x') }}{% endfor %}", result: "i1i2"},
 		{tmpl: "{% set loc = 'l1' %}{{ '{{ loc }}' | render }}", result: "l1"},
 		// TODO test for this when https://github.com/pallets/jinja/issues/1478 gets fixed
-		// {tmpl: "{% for e in list %}{{ '{{ e }}' | render }}{% endfor %}", result: ""},
+		// {tmpl: "{% for e in list %}{{ render('{{ e }}') }}{% endfor %}", result: ""},
+		// same is before, but with a workaround to make 'e' a local variable
+		{tmpl: "{% for e in list %}{% set e=e %}{{ render('{{ e.x }}') }}{% endfor %}", result: "i1i2"},
 	}
 
 	for i, tc := range tests {
