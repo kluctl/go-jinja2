@@ -1,4 +1,5 @@
 from jinja2 import StrictUndefined, ChainableUndefined, ChoiceLoader
+from jinja2.ext import Extension
 
 from .jinja2_utils import MyEnvironment, extract_template_error, RootTemplateLoader, SearchPathAbsLoader, \
     MyFileSystemLoader
@@ -42,7 +43,20 @@ class Jinja2Renderer:
         environment.globals.update(self.opts.get("globals", {}))
 
         for e in self.opts.get("extensions", []):
-            environment.add_extension(e)
+            e = str(e)
+            if e.count("\n") == 0:  # single line, assume it's a module name
+                environment.add_extension(e)
+            else:  # multi line, assume it's python code
+                track = {}
+                exec(e, track)
+                k = None
+                for v in track.values():
+                    if isinstance(v, type) and v != Extension and issubclass(v, Extension):
+                        k = v
+                        break
+                if k is None:
+                    raise AttributeError("No Extension subclass found in code")
+                environment.add_extension(k)
 
         for name, code in self.opts.get("filters", {}).items():
             track = {}
