@@ -55,9 +55,9 @@ def sha256(s, digest_len=None):
     return hash
 
 
-def slugify(s, allow_unicode=False):
+def slugify(s, **slugify_args):
     from slugify import slugify as _slugify
-    return _slugify(s, allow_unicode=allow_unicode)
+    return _slugify(s, **slugify_args)
 
 
 @jinja2.pass_context
