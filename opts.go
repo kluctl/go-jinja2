@@ -1,5 +1,7 @@
 package jinja2
 
+import "github.com/kluctl/go-embed-python/python"
+
 type jinja2Options struct {
 	DebugTrace   bool `json:"debugTrace"`
 	NonStrict    bool `json:"nonStrict"`
@@ -13,6 +15,7 @@ type jinja2Options struct {
 	Extensions []string          `json:"extensions"`
 
 	// not passed to renderer
+	python                 python.Python
 	pythonPath             []string
 	embeddedExtractDir     string
 	templateIgnoreRootPath string
@@ -25,6 +28,12 @@ type Jinja2Opt func(o *jinja2Options)
 func WithDebugTrace(debugTrace bool) Jinja2Opt {
 	return func(o *jinja2Options) {
 		o.DebugTrace = debugTrace
+	}
+}
+
+func WithPython(p python.Python) Jinja2Opt {
+	return func(o *jinja2Options) {
+		o.python = p
 	}
 }
 

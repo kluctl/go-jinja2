@@ -17,7 +17,7 @@ import (
 )
 
 type Jinja2 struct {
-	ep          *python.EmbeddedPython
+	ep          python.Python
 	extractDir  string
 	jinja2Lib   *embed_util.EmbeddedFiles
 	rendererSrc *embed_util.EmbeddedFiles
@@ -69,9 +69,13 @@ func NewJinja2(name string, parallelism int, opts ...Jinja2Opt) (*Jinja2, error)
 	}
 	tmpDir = filepath.Join(tmpDir, name)
 
-	j2.ep, err = python.NewEmbeddedPythonWithTmpDir(tmpDir+"-python", true)
-	if err != nil {
-		return nil, err
+	if j2.defaultOptions.python != nil {
+		j2.ep = j2.defaultOptions.python
+	} else {
+		j2.ep, err = python.NewEmbeddedPythonWithTmpDir(tmpDir+"-python", true)
+		if err != nil {
+			return nil, err
+		}
 	}
 	j2.jinja2Lib, err = embed_util.NewEmbeddedFilesWithTmpDir(data.Data, tmpDir+"-jinja2-lib", true)
 	if err != nil {
@@ -120,7 +124,10 @@ func (j *Jinja2) Close() {
 func (j *Jinja2) Cleanup() {
 	_ = j.rendererSrc.Cleanup()
 	_ = j.jinja2Lib.Cleanup()
-	_ = j.ep.Cleanup()
+
+	if ep, ok := j.ep.(*python.EmbeddedPython); ok {
+		_ = ep.Cleanup()
+	}
 }
 
 func (j *Jinja2) RenderStrings(jobs []*RenderJob, opts ...Jinja2Opt) error {
