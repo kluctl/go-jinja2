@@ -36,7 +36,12 @@ func newPythonJinja2Renderer(j2 *Jinja2) (*pythonJinja2Renderer, error) {
 	}()
 
 	args := []string{filepath.Join(j2.rendererSrc.GetExtractedPath(), "main.py")}
-	j2r.cmd = j2.ep.PythonCmd(args...)
+
+	var err error
+	j2r.cmd, err = j2.ep.PythonCmd(args...)
+	if err != nil {
+		return nil, err
+	}
 	j2r.cmd.Stderr = os.Stderr
 
 	stdout, err := j2r.cmd.StdoutPipe()
