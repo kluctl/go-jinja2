@@ -2,6 +2,7 @@ package jinja2
 
 import (
 	"fmt"
+	"github.com/Masterminds/semver/v3"
 	"github.com/go-git/go-git/v5/plumbing/format/gitignore"
 	"github.com/gobwas/glob"
 	"github.com/hashicorp/go-multierror"
@@ -16,8 +17,10 @@ import (
 	"sync"
 )
 
+var minimumPythonVersion = semver.MustParse("3.10.0")
+
 type Jinja2 struct {
-	ep          *python.EmbeddedPython
+	ep          python.Python
 	extractDir  string
 	jinja2Lib   *embed_util.EmbeddedFiles
 	rendererSrc *embed_util.EmbeddedFiles
@@ -69,15 +72,24 @@ func NewJinja2(name string, parallelism int, opts ...Jinja2Opt) (*Jinja2, error)
 	}
 	tmpDir = filepath.Join(tmpDir, name)
 
-	j2.ep, err = python.NewEmbeddedPythonWithTmpDir(tmpDir+"-python", true)
-	if err != nil {
-		return nil, err
+	if j2.defaultOptions.python != nil {
+		j2.ep = j2.defaultOptions.python
+	} else {
+		j2.ep, err = python.NewEmbeddedPythonWithTmpDir(tmpDir+"-python", true)
+		if err != nil {
+			return nil, err
+		}
 	}
 	j2.jinja2Lib, err = embed_util.NewEmbeddedFilesWithTmpDir(data.Data, tmpDir+"-jinja2-lib", true)
 	if err != nil {
 		return nil, err
 	}
 	j2.ep.AddPythonPath(j2.jinja2Lib.GetExtractedPath())
+
+	err = j2.checkPythonVersion()
+	if err != nil {
+		return nil, err
+	}
 
 	j2.rendererSrc, err = embed_util.NewEmbeddedFilesWithTmpDir(python_src.RendererSource, tmpDir+"-jinja2-renderer", true)
 	if err != nil {
@@ -110,6 +122,25 @@ func NewJinja2(name string, parallelism int, opts ...Jinja2Opt) (*Jinja2, error)
 	return j2, nil
 }
 
+func (j *Jinja2) checkPythonVersion() error {
+	cmd, err := j.ep.PythonCmd("-c", `import platform; print(platform.python_version())`)
+	if err != nil {
+		return err
+	}
+	v, err := cmd.Output()
+	if err != nil {
+		return err
+	}
+	v2, err := semver.NewVersion(strings.TrimSpace(string(v)))
+	if err != nil {
+		return fmt.Errorf("failed to parse python version: %w", err)
+	}
+	if v2.LessThan(minimumPythonVersion) {
+		return fmt.Errorf("python version (%s) must be at least %s", v2.String(), minimumPythonVersion)
+	}
+	return nil
+}
+
 func (j *Jinja2) Close() {
 	for i := 0; i < j.parallelism; i++ {
 		pj := <-j.pj
@@ -120,7 +151,10 @@ func (j *Jinja2) Close() {
 func (j *Jinja2) Cleanup() {
 	_ = j.rendererSrc.Cleanup()
 	_ = j.jinja2Lib.Cleanup()
-	_ = j.ep.Cleanup()
+
+	if ep, ok := j.ep.(*python.EmbeddedPython); ok {
+		_ = ep.Cleanup()
+	}
 }
 
 func (j *Jinja2) RenderStrings(jobs []*RenderJob, opts ...Jinja2Opt) error {
