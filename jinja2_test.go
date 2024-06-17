@@ -10,17 +10,25 @@ import (
 	"testing"
 )
 
-func newJinja2(t *testing.T, opts ...Jinja2Opt) *Jinja2 {
+func newJinja2WithErr(t *testing.T, opts ...Jinja2Opt) (*Jinja2, error) {
 	name := fmt.Sprintf("jinja2-%d", rand.Uint32())
 	opts2 := append(opts, WithExtension("go_jinja2.ext.kluctl"))
 	j2, err := NewJinja2(name, 1, opts2...)
 	if err != nil {
-		t.Fatal(err)
+		return nil, err
 	}
 
 	t.Cleanup(j2.Close)
 	t.Cleanup(j2.Cleanup)
 
+	return j2, nil
+}
+
+func newJinja2(t *testing.T, opts ...Jinja2Opt) *Jinja2 {
+	j2, err := newJinja2WithErr(t, opts...)
+	if err != nil {
+		t.Fatal(err)
+	}
 	return j2
 }
 

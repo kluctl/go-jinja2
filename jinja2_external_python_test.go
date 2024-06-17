@@ -2,6 +2,7 @@ package jinja2
 
 import (
 	"fmt"
+	"github.com/Masterminds/semver/v3"
 	"github.com/kluctl/go-embed-python/python"
 	"github.com/stretchr/testify/assert"
 	"math/rand"
@@ -33,4 +34,21 @@ func TestSystemPython(t *testing.T) {
 	r1, err := j2.RenderFile(t1)
 	assert.NoError(t, err)
 	assert.Equal(t, "a", r1)
+}
+
+func TestSystemPythonVersion(t *testing.T) {
+	backup := minimumPythonVersion
+	t.Cleanup(func() {
+		minimumPythonVersion = backup
+	})
+
+	minimumPythonVersion = semver.MustParse("10.0.0")
+
+	ep := python.NewPython()
+	if _, err := ep.GetExePath(); err != nil {
+		t.Skipf("skipping due to missing python binary")
+	}
+
+	_, err := newJinja2WithErr(t, WithPython(ep))
+	assert.ErrorContains(t, err, "must be at least 10.0.0")
 }
