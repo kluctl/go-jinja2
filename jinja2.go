@@ -157,6 +157,12 @@ func (j *Jinja2) Cleanup() {
 	}
 }
 
+func (j *Jinja2) Load(opts ...Jinja2Opt) {
+	for _, o := range opts {
+		o(&j.defaultOptions)
+	}
+}
+
 func (j *Jinja2) RenderStrings(jobs []*RenderJob, opts ...Jinja2Opt) error {
 	pj := <-j.pj
 	defer func() { j.pj <- pj }()
