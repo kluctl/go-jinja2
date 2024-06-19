@@ -1,7 +1,6 @@
-from jinja2 import StrictUndefined, ChainableUndefined, ChoiceLoader
+from jinja2 import StrictUndefined, ChainableUndefined
 
-from .jinja2_utils import MyEnvironment, extract_template_error, RootTemplateLoader, SearchPathAbsLoader, \
-    MyFileSystemLoader
+from .jinja2_utils import MyEnvironment, extract_template_error, MyLoader
 
 
 class NullUndefined(ChainableUndefined):
@@ -26,12 +25,7 @@ class Jinja2Renderer:
 
     def build_env(self):
         debug_enabled = self.opts.get("debugTrace", False)
-        root_loader = RootTemplateLoader()
-        loader = ChoiceLoader([
-            root_loader,
-            SearchPathAbsLoader(self.opts.get("searchDirs", [])),
-            MyFileSystemLoader(self.opts.get("searchDirs", [])),
-        ])
+        loader = MyLoader(self.opts.get("searchDirs", []))
         environment = MyEnvironment(debug_enabled=debug_enabled,
                                     loader=loader,
                                     undefined=NullUndefined if self.opts.get("nonStrict", False) else StrictUndefined,
@@ -61,10 +55,10 @@ class Jinja2Renderer:
 
             environment.filters[name] = f
 
-        return environment, root_loader
+        return environment, loader
 
     def render_helper(self, templates, is_string):
-        env, root_loader = self.build_env()
+        env, loader = self.build_env()
 
         result = []
 
@@ -72,8 +66,9 @@ class Jinja2Renderer:
             try:
                 if is_string:
                     t = env.from_string(t)
+                    loader.root_template = None
                 else:
-                    root_loader.root_template = t
+                    loader.root_template = t
                     t = env.get_template(t)
                 result.append({
                     "result": t.render()

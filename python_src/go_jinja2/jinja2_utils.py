@@ -1,10 +1,12 @@
 import io
 import os
-import sys
+import posixpath
 import traceback
 import typing
 
-from jinja2 import Environment, TemplateNotFound, BaseLoader, FileSystemLoader
+import sys
+from jinja2 import Environment, TemplateNotFound, BaseLoader
+from jinja2.loaders import split_template_path
 
 
 # This Jinja2 environment allows to load templates relative to the parent template. This means that for example
@@ -34,13 +36,70 @@ class MyEnvironment(Environment):
             print(s, file=sys.stderr)
 
 
-    def read_template_helper(self, template):
-        self.print_debug("_read_template_helper %s" % template)
+class MyLoader(BaseLoader):
+    def __init__(self, searchpath):
+        super().__init__()
+        self.root_template = None
+        self.searchpath = searchpath
+
+    def get_source(
+            self, environment: "MyEnvironment", template: str
+    ) -> typing.Tuple[str, typing.Optional[str], typing.Optional[typing.Callable[[], bool]]]:
+        return self.debug_wrap_get_source("MyLoader", self._get_source, environment, template)
+
+    def _find_path(self, template):
+        if template == self.root_template:
+            return template
+
+        p = self._find_path_abs_search_path(template)
+        if p:
+            return p
+
+        p = self._find_path_rel_search_path(template)
+        if p:
+            return p
+
+        return None
+
+    def _find_path_abs_search_path(self, template):
+        try:
+            if not os.path.isabs(template):
+                return None
+            template = os.path.abspath(template)
+            for s in self.searchpath:
+                sabs = os.path.abspath(s)
+                if template.startswith(sabs + os.path.sep):
+                    return template
+            return None
+        except OSError:
+            return None
+
+    def _find_path_rel_search_path(self, template):
+        pieces = split_template_path(template)
+        for searchpath in self.searchpath:
+            # Use posixpath even on Windows to avoid "drive:" or UNC
+            # segments breaking out of the search directory.
+            filename = posixpath.join(searchpath, *pieces)
+            if os.path.isfile(filename):
+                return filename
+        return None
+
+    def _get_source(
+            self, environment: "MyEnvironment", template: str
+    ) -> typing.Tuple[str, typing.Optional[str], typing.Optional[typing.Callable[[], bool]]]:
+        p = self._find_path(template)
+        if not p:
+            raise TemplateNotFound(template)
+        return self.read_template_helper(environment, p)
+
+    def read_template_helper(self, environment, template):
+        environment.print_debug("_read_template_helper %s" % template)
         try:
             with open(template) as f:
                 contents = f.read()
         except OSError:
             raise TemplateNotFound(template)
+
         mtime = os.path.getmtime(template)
 
         def uptodate() -> bool:
@@ -51,9 +110,8 @@ class MyEnvironment(Environment):
 
         return contents, os.path.normpath(template), uptodate
 
-
     def debug_wrap_get_source(self, prefix, fn, environment, template):
-        if not self.debug_enabled:
+        if not environment.debug_enabled:
             return fn(environment, template)
         try:
             contents, filename, uptodate = fn(environment, template)
@@ -62,63 +120,6 @@ class MyEnvironment(Environment):
         except TemplateNotFound:
             print("%s.get_source(template=%s), result=TemplateNotFound" % (prefix, template), file=sys.stderr)
             raise
-
-
-class RootTemplateLoader(BaseLoader):
-    def __init__(self):
-        super().__init__()
-        self.root_template = None
-
-    def get_source(
-            self, environment: "MyEnvironment", template: str
-    ) -> typing.Tuple[str, typing.Optional[str], typing.Optional[typing.Callable[[], bool]]]:
-        return environment.debug_wrap_get_source("RootTemplateLoader", self._get_source, environment, template)
-
-    def _get_source(
-            self, environment: "MyEnvironment", template: str
-    ) -> typing.Tuple[str, typing.Optional[str], typing.Optional[typing.Callable[[], bool]]]:
-        if template != self.root_template:
-            raise TemplateNotFound(template)
-        return environment.read_template_helper(template)
-
-
-class SearchPathAbsLoader(BaseLoader):
-    def __init__(self, searchpath):
-        self.searchpath = searchpath
-
-    def get_source(
-            self, environment: "MyEnvironment", template: str
-    ) -> typing.Tuple[str, str, typing.Callable[[], bool]]:
-        return environment.debug_wrap_get_source("SearchPathAbsLoader", self._get_source, environment, template)
-
-    def _get_source(
-            self, environment: "MyEnvironment", template: str
-    ) -> typing.Tuple[str, str, typing.Callable[[], bool]]:
-        try:
-            if not os.path.isabs(template):
-                raise TemplateNotFound(template)
-            template = os.path.abspath(template)
-            found = False
-            for s in self.searchpath:
-                sabs = os.path.abspath(s)
-                if template.startswith(sabs + os.path.sep):
-                    found = True
-            if not found:
-                raise TemplateNotFound(template)
-        except OSError:
-            raise TemplateNotFound(template)
-
-        return environment.read_template_helper(template)
-
-
-class MyFileSystemLoader(FileSystemLoader):
-    def __init__(self, searchpath):
-        super().__init__(searchpath)
-
-    def get_source(
-        self, environment: "MyEnvironment", template: str
-    ) -> typing.Tuple[str, str, typing.Callable[[], bool]]:
-        return environment.debug_wrap_get_source("MyFileSystemLoader", super().get_source, environment, template)
 
 
 def extract_template_error(e):
