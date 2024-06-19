@@ -2,10 +2,12 @@ import base64
 import hashlib
 import json
 import os
+import textwrap
+
 import sys
 
 import jinja2
-from jinja2 import TemplateError
+from jinja2 import TemplateError, TemplateNotFound
 from jinja2.ext import Extension
 from jinja2.runtime import Context
 
@@ -68,6 +70,26 @@ def load_template(ctx, path, **kwargs):
     return t.render(vars)
 
 
+@jinja2.pass_context
+def load_base64(ctx, path, width=None):
+    ctx.environment.print_debug("load_base64(%s)" % path)
+    p = path.replace(os.path.sep, '/')
+    if ctx.name:
+        p = ctx.environment.join_path(path, ctx.name)
+
+    p = ctx.environment.loader._find_path(path)
+    if not p:
+        raise TemplateNotFound(path)
+
+    contents, _, _ = ctx.environment.loader.read_template_helper(ctx.environment, p, True)
+
+    contents = base64.b64encode(contents).decode("utf-8")
+    if width:
+        contents = textwrap.fill(contents, width=width)
+
+    return contents
+
+
 class VarNotFoundException(Exception):
     pass
 
@@ -123,6 +145,7 @@ def add_jinja2_filters(jinja2_env):
     jinja2_env.filters['sha256'] = sha256
     jinja2_env.filters['slugify'] = slugify
     jinja2_env.globals['load_template'] = load_template
+    jinja2_env.globals['load_base64'] = load_base64
     jinja2_env.globals['get_var'] = get_var
     jinja2_env.globals['merge_dict'] = merge_dict
     jinja2_env.globals['update_dict'] = update_dict

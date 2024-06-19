@@ -261,6 +261,14 @@ func TestRenderFiles_Includes(t *testing.T) {
 			err: fmt.Sprintf("template %s/include.yaml not found", filepath.ToSlash(includeDir)),
 		},
 		{
+			name: "load_base64 with absolute file fails",
+			files: map[string]string{
+				"f.yaml": fmt.Sprintf(`{{ load_base64("%s/include.yaml") }}`, filepath.ToSlash(includeDir)),
+			},
+			t:   "f.yaml",
+			err: fmt.Sprintf("template %s/include.yaml not found", filepath.ToSlash(includeDir)),
+		},
+		{
 			name: "include without searchdir fails",
 			files: map[string]string{
 				"f.yaml": `{% include "include.yaml" %}`,
@@ -292,6 +300,32 @@ func TestRenderFiles_Includes(t *testing.T) {
 			},
 			t:  "f.yaml",
 			r:  "test",
+			sd: []string{includeDir},
+		},
+		{
+			name: "load_base64 without searchdir fails",
+			files: map[string]string{
+				"f.yaml": `{{ load_base64("include.yaml") }}`,
+			},
+			t:   "f.yaml",
+			err: "template include.yaml not found",
+		},
+		{
+			name: "load_base64 with searchdir succeeds",
+			files: map[string]string{
+				"f.yaml": `{{ load_base64("include.yaml") }}`,
+			},
+			t:  "f.yaml",
+			r:  "dGVzdA==",
+			sd: []string{includeDir},
+		},
+		{
+			name: "load_base64 with width argument",
+			files: map[string]string{
+				"f.yaml": `{{ load_base64("include.yaml", 2) }}`,
+			},
+			t:  "f.yaml",
+			r:  "dG\nVz\ndA\n==",
 			sd: []string{includeDir},
 		},
 		{
