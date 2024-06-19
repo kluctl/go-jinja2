@@ -92,10 +92,13 @@ class MyLoader(BaseLoader):
             raise TemplateNotFound(template)
         return self.read_template_helper(environment, p)
 
-    def read_template_helper(self, environment, template):
+    def read_template_helper(self, environment, template, binary=False):
         environment.print_debug("_read_template_helper %s" % template)
         try:
-            with open(template) as f:
+            mode = "r"
+            if binary:
+                mode += "b"
+            with open(template, mode) as f:
                 contents = f.read()
         except OSError:
             raise TemplateNotFound(template)
