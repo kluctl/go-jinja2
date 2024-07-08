@@ -1,128 +1,83 @@
 {
-  "contentHash": "3658a10f0119d5739bdcad80a543c09532e54bdc29f506bfd6dc098c8c0a0ddb",
+  "contentHash": "03f895c361713063cafe2a3e5fdc700249064b2bae1be315776267e0a9024d81",
   "files": [
     {
-      "name": "Jinja2-3.1.2.dist-info",
+      "name": "MarkupSafe-2.1.5.dist-info",
       "size": 0,
       "perm": 2147484141
     },
     {
-      "name": "Jinja2-3.1.2.dist-info/INSTALLER",
+      "name": "MarkupSafe-2.1.5.dist-info/INSTALLER",
       "size": 4,
       "perm": 420
     },
     {
-      "name": "Jinja2-3.1.2.dist-info/LICENSE.rst",
+      "name": "MarkupSafe-2.1.5.dist-info/LICENSE.rst",
       "size": 1475,
       "perm": 420
     },
     {
-      "name": "Jinja2-3.1.2.dist-info/METADATA",
-      "size": 3539,
-      "perm": 420
-    },
-    {
-      "name": "Jinja2-3.1.2.dist-info/RECORD",
-      "size": 3788,
-      "perm": 420
-    },
-    {
-      "name": "Jinja2-3.1.2.dist-info/REQUESTED",
-      "size": 0,
-      "perm": 420
-    },
-    {
-      "name": "Jinja2-3.1.2.dist-info/WHEEL",
-      "size": 92,
-      "perm": 420
-    },
-    {
-      "name": "Jinja2-3.1.2.dist-info/entry_points.txt",
-      "size": 59,
-      "perm": 420
-    },
-    {
-      "name": "Jinja2-3.1.2.dist-info/top_level.txt",
-      "size": 7,
-      "perm": 420
-    },
-    {
-      "name": "MarkupSafe-2.1.3.dist-info",
-      "size": 0,
-      "perm": 2147484141
-    },
-    {
-      "name": "MarkupSafe-2.1.3.dist-info/INSTALLER",
-      "size": 4,
-      "perm": 420
-    },
-    {
-      "name": "MarkupSafe-2.1.3.dist-info/LICENSE.rst",
-      "size": 1475,
-      "perm": 420
-    },
-    {
-      "name": "MarkupSafe-2.1.3.dist-info/METADATA",
+      "name": "MarkupSafe-2.1.5.dist-info/METADATA",
       "size": 3003,
       "perm": 420
     },
     {
-      "name": "MarkupSafe-2.1.3.dist-info/RECORD",
+      "name": "MarkupSafe-2.1.5.dist-info/RECORD",
       "size": 1202,
       "perm": 420
     },
     {
-      "name": "MarkupSafe-2.1.3.dist-info/REQUESTED",
+      "name": "MarkupSafe-2.1.5.dist-info/REQUESTED",
       "size": 0,
       "perm": 420
     },
     {
-      "name": "MarkupSafe-2.1.3.dist-info/WHEEL",
+      "name": "MarkupSafe-2.1.5.dist-info/WHEEL",
       "size": 154,
       "perm": 420
     },
     {
-      "name": "MarkupSafe-2.1.3.dist-info/top_level.txt",
+      "name": "MarkupSafe-2.1.5.dist-info/top_level.txt",
       "size": 11,
       "perm": 420
     },
     {
-      "name": "PyYAML-6.0.dist-info",
+      "name": "PyYAML-6.0.1.dist-info",
       "size": 0,
       "perm": 2147484141
     },
     {
-      "name": "PyYAML-6.0.dist-info/INSTALLER",
+      "name": "PyYAML-6.0.1.dist-info/INSTALLER",
       "size": 4,
       "perm": 420
     },
     {
-      "name": "PyYAML-6.0.dist-info/LICENSE",
+      "name": "PyYAML-6.0.1.dist-info/LICENSE",
       "size": 1101,
       "perm": 420
     },
     {
-      "name": "PyYAML-6.0.dist-info/METADATA",
-      "size": 2056,
+      "name": "PyYAML-6.0.1.dist-info/METADATA",
+      "size": 2058,
       "perm": 420
     },
     {
-      "name": "PyYAML-6.0.dist-info/RECORD",
-      "size": 2771,
+      "name": "PyYAML-6.0.1.dist-info/RECORD",
+      "size": 2785,
       "perm": 420
     },
     {
-      "name": "PyYAML-6.0.dist-info/REQUESTED",
+      "name": "PyYAML-6.0.1.dist-info/REQUESTED",
       "size": 0,
       "perm": 420
     },
     {
-      "name": "PyYAML-6.0.dist-info/WHEEL",
+      "name": "PyYAML-6.0.1.dist-info/WHEEL",
       "size": 154,
       "perm": 420
     },
     {
-      "name": "PyYAML-6.0.dist-info/top_level.txt",
+      "name": "PyYAML-6.0.1.dist-info/top_level.txt",
       "size": 11,
       "perm": 420
     },
@@ -157,42 +112,42 @@
       "perm": 2147484141
     },
     {
-      "name": "click-8.1.3.dist-info",
+      "name": "click-8.1.7.dist-info",
       "size": 0,
       "perm": 2147484141
     },
     {
-      "name": "click-8.1.3.dist-info/INSTALLER",
+      "name": "click-8.1.7.dist-info/INSTALLER",
       "size": 4,
       "perm": 420
     },
     {
-      "name": "click-8.1.3.dist-info/LICENSE.rst",
+      "name": "click-8.1.7.dist-info/LICENSE.rst",
       "size": 1475,
       "perm": 420
     },
     {
-      "name": "click-8.1.3.dist-info/METADATA",
-      "size": 3247,
+      "name": "click-8.1.7.dist-info/METADATA",
+      "size": 3014,
       "perm": 420
     },
     {
-      "name": "click-8.1.3.dist-info/RECORD",
+      "name": "click-8.1.7.dist-info/RECORD",
       "size": 2582,
       "perm": 420
     },
     {
-      "name": "click-8.1.3.dist-info/REQUESTED",
+      "name": "click-8.1.7.dist-info/REQUESTED",
       "size": 0,
       "perm": 420
     },
     {
-      "name": "click-8.1.3.dist-info/WHEEL",
+      "name": "click-8.1.7.dist-info/WHEEL",
       "size": 92,
       "perm": 420
     },
     {
-      "name": "click-8.1.3.dist-info/top_level.txt",
+      "name": "click-8.1.7.dist-info/top_level.txt",
       "size": 6,
       "perm": 420
     },
@@ -203,12 +158,12 @@
     },
     {
       "name": "click/_compat.py",
-      "size": 18810,
+      "size": 18744,
       "perm": 420
     },
     {
       "name": "click/_termui_impl.py",
-      "size": 23451,
+      "size": 24069,
       "perm": 420
     },
     {
@@ -223,17 +178,17 @@
     },
     {
       "name": "click/core.py",
-      "size": 112782,
+      "size": 114086,
       "perm": 420
     },
     {
       "name": "click/decorators.py",
-      "size": 16350,
+      "size": 18719,
       "perm": 420
     },
     {
       "name": "click/exceptions.py",
-      "size": 9167,
+      "size": 9273,
       "perm": 420
     },
     {
@@ -248,7 +203,7 @@
     },
     {
       "name": "click/parser.py",
-      "size": 19044,
+      "size": 19067,
       "perm": 420
     },
     {
@@ -258,72 +213,27 @@
     },
     {
       "name": "click/shell_completion.py",
-      "size": 18018,
+      "size": 18460,
       "perm": 420
     },
     {
       "name": "click/termui.py",
-      "size": 28355,
+      "size": 28324,
       "perm": 420
     },
     {
       "name": "click/testing.py",
-      "size": 16063,
+      "size": 16084,
       "perm": 420
     },
     {
       "name": "click/types.py",
-      "size": 35805,
+      "size": 36391,
       "perm": 420
     },
     {
       "name": "click/utils.py",
-      "size": 18682,
-      "perm": 420
-    },
-    {
-      "name": "decorator-5.1.1.dist-info",
-      "size": 0,
-      "perm": 2147484141
-    },
-    {
-      "name": "decorator-5.1.1.dist-info/INSTALLER",
-      "size": 4,
-      "perm": 420
-    },
-    {
-      "name": "decorator-5.1.1.dist-info/LICENSE.txt",
-      "size": 1309,
-      "perm": 420
-    },
-    {
-      "name": "decorator-5.1.1.dist-info/METADATA",
-      "size": 3955,
-      "perm": 420
-    },
-    {
-      "name": "decorator-5.1.1.dist-info/RECORD",
-      "size": 697,
-      "perm": 420
-    },
-    {
-      "name": "decorator-5.1.1.dist-info/WHEEL",
-      "size": 92,
-      "perm": 420
-    },
-    {
-      "name": "decorator-5.1.1.dist-info/pbr.json",
-      "size": 47,
-      "perm": 420
-    },
-    {
-      "name": "decorator-5.1.1.dist-info/top_level.txt",
-      "size": 10,
-      "perm": 420
-    },
-    {
-      "name": "decorator.py",
-      "size": 16752,
+      "size": 20298,
       "perm": 420
     },
     {
@@ -332,8 +242,48 @@
       "perm": 2147484141
     },
     {
+      "name": "jinja2-3.1.4.dist-info",
+      "size": 0,
+      "perm": 2147484141
+    },
+    {
+      "name": "jinja2-3.1.4.dist-info/INSTALLER",
+      "size": 4,
+      "perm": 420
+    },
+    {
+      "name": "jinja2-3.1.4.dist-info/LICENSE.txt",
+      "size": 1475,
+      "perm": 420
+    },
+    {
+      "name": "jinja2-3.1.4.dist-info/METADATA",
+      "size": 2640,
+      "perm": 420
+    },
+    {
+      "name": "jinja2-3.1.4.dist-info/RECORD",
+      "size": 3697,
+      "perm": 420
+    },
+    {
+      "name": "jinja2-3.1.4.dist-info/REQUESTED",
+      "size": 0,
+      "perm": 420
+    },
+    {
+      "name": "jinja2-3.1.4.dist-info/WHEEL",
+      "size": 81,
+      "perm": 420
+    },
+    {
+      "name": "jinja2-3.1.4.dist-info/entry_points.txt",
+      "size": 58,
+      "perm": 420
+    },
+    {
       "name": "jinja2/__init__.py",
-      "size": 1927,
+      "size": 1928,
       "perm": 420
     },
     {
@@ -343,7 +293,7 @@
     },
     {
       "name": "jinja2/async_utils.py",
-      "size": 2472,
+      "size": 2477,
       "perm": 420
     },
     {
@@ -353,7 +303,7 @@
     },
     {
       "name": "jinja2/compiler.py",
-      "size": 72172,
+      "size": 72271,
       "perm": 420
     },
     {
@@ -373,7 +323,7 @@
     },
     {
       "name": "jinja2/environment.py",
-      "size": 61349,
+      "size": 61538,
       "perm": 420
     },
     {
@@ -383,12 +333,12 @@
     },
     {
       "name": "jinja2/ext.py",
-      "size": 31502,
+      "size": 31877,
       "perm": 420
     },
     {
       "name": "jinja2/filters.py",
-      "size": 53509,
+      "size": 54611,
       "perm": 420
     },
     {
@@ -398,37 +348,37 @@
     },
     {
       "name": "jinja2/lexer.py",
-      "size": 29726,
+      "size": 29754,
       "perm": 420
     },
     {
       "name": "jinja2/loaders.py",
-      "size": 23207,
+      "size": 23167,
       "perm": 420
     },
     {
       "name": "jinja2/meta.py",
-      "size": 4396,
+      "size": 4397,
       "perm": 420
     },
     {
       "name": "jinja2/nativetypes.py",
-      "size": 4226,
+      "size": 4210,
       "perm": 420
     },
     {
       "name": "jinja2/nodes.py",
-      "size": 34550,
+      "size": 34579,
       "perm": 420
     },
     {
       "name": "jinja2/optimizer.py",
-      "size": 1650,
+      "size": 1651,
       "perm": 420
     },
     {
       "name": "jinja2/parser.py",
-      "size": 39595,
+      "size": 39890,
       "perm": 420
     },
     {
@@ -438,27 +388,27 @@
     },
     {
       "name": "jinja2/runtime.py",
-      "size": 33476,
+      "size": 33435,
       "perm": 420
     },
     {
       "name": "jinja2/sandbox.py",
-      "size": 14584,
+      "size": 14616,
       "perm": 420
     },
     {
       "name": "jinja2/tests.py",
-      "size": 5905,
+      "size": 5926,
       "perm": 420
     },
     {
       "name": "jinja2/utils.py",
-      "size": 23965,
+      "size": 23952,
       "perm": 420
     },
     {
       "name": "jinja2/visitor.py",
-      "size": 3568,
+      "size": 3557,
       "perm": 420
     },
     {
@@ -467,47 +417,47 @@
       "perm": 2147484141
     },
     {
-      "name": "jsonpath_ng-1.5.3.dist-info",
+      "name": "jsonpath_ng-1.6.1.dist-info",
       "size": 0,
       "perm": 2147484141
     },
     {
-      "name": "jsonpath_ng-1.5.3.dist-info/INSTALLER",
+      "name": "jsonpath_ng-1.6.1.dist-info/INSTALLER",
       "size": 4,
       "perm": 420
     },
     {
-      "name": "jsonpath_ng-1.5.3.dist-info/LICENSE",
+      "name": "jsonpath_ng-1.6.1.dist-info/LICENSE",
       "size": 11358,
       "perm": 420
     },
     {
-      "name": "jsonpath_ng-1.5.3.dist-info/METADATA",
-      "size": 16680,
+      "name": "jsonpath_ng-1.6.1.dist-info/METADATA",
+      "size": 18072,
       "perm": 420
     },
     {
-      "name": "jsonpath_ng-1.5.3.dist-info/RECORD",
+      "name": "jsonpath_ng-1.6.1.dist-info/RECORD",
       "size": 2549,
       "perm": 420
     },
     {
-      "name": "jsonpath_ng-1.5.3.dist-info/REQUESTED",
+      "name": "jsonpath_ng-1.6.1.dist-info/REQUESTED",
       "size": 0,
       "perm": 420
     },
     {
-      "name": "jsonpath_ng-1.5.3.dist-info/WHEEL",
+      "name": "jsonpath_ng-1.6.1.dist-info/WHEEL",
       "size": 92,
       "perm": 420
     },
     {
-      "name": "jsonpath_ng-1.5.3.dist-info/entry_points.txt",
-      "size": 70,
+      "name": "jsonpath_ng-1.6.1.dist-info/entry_points.txt",
+      "size": 69,
       "perm": 420
     },
     {
-      "name": "jsonpath_ng-1.5.3.dist-info/top_level.txt",
+      "name": "jsonpath_ng-1.6.1.dist-info/top_level.txt",
       "size": 12,
       "perm": 420
     },
@@ -528,7 +478,7 @@
     },
     {
       "name": "jsonpath_ng/bin/jsonpath.py",
-      "size": 2151,
+      "size": 2057,
       "perm": 420
     },
     {
@@ -553,37 +503,37 @@
     },
     {
       "name": "jsonpath_ng/ext/filter.py",
-      "size": 3935,
+      "size": 4312,
       "perm": 420
     },
     {
       "name": "jsonpath_ng/ext/iterable.py",
-      "size": 2984,
+      "size": 3680,
       "perm": 420
     },
     {
       "name": "jsonpath_ng/ext/parser.py",
-      "size": 5286,
+      "size": 5351,
       "perm": 420
     },
     {
       "name": "jsonpath_ng/ext/string.py",
-      "size": 3258,
+      "size": 3261,
       "perm": 420
     },
     {
       "name": "jsonpath_ng/jsonpath.py",
-      "size": 25078,
+      "size": 26402,
       "perm": 420
     },
     {
       "name": "jsonpath_ng/lexer.py",
-      "size": 5333,
+      "size": 5231,
       "perm": 420
     },
     {
       "name": "jsonpath_ng/parser.py",
-      "size": 5842,
+      "size": 5883,
       "perm": 420
     },
     {
@@ -593,7 +543,7 @@
     },
     {
       "name": "markupsafe/__init__.py",
-      "size": 10338,
+      "size": 10958,
       "perm": 420
     },
     {
@@ -608,7 +558,7 @@
     },
     {
       "name": "markupsafe/_speedups.cpython-311-aarch64-linux-gnu.so",
-      "size": 108160,
+      "size": 107968,
       "perm": 493,
       "compressed": true
     },
@@ -698,88 +648,48 @@
       "perm": 420
     },
     {
-      "name": "python_slugify-6.1.2.dist-info",
+      "name": "python_slugify-8.0.4.dist-info",
       "size": 0,
       "perm": 2147484141
     },
     {
-      "name": "python_slugify-6.1.2.dist-info/INSTALLER",
+      "name": "python_slugify-8.0.4.dist-info/INSTALLER",
       "size": 4,
       "perm": 420
     },
     {
-      "name": "python_slugify-6.1.2.dist-info/LICENSE",
+      "name": "python_slugify-8.0.4.dist-info/LICENSE",
       "size": 1103,
       "perm": 420
     },
     {
-      "name": "python_slugify-6.1.2.dist-info/METADATA",
-      "size": 7647,
+      "name": "python_slugify-8.0.4.dist-info/METADATA",
+      "size": 8469,
       "perm": 420
     },
     {
-      "name": "python_slugify-6.1.2.dist-info/RECORD",
-      "size": 1417,
+      "name": "python_slugify-8.0.4.dist-info/RECORD",
+      "size": 1489,
       "perm": 420
     },
     {
-      "name": "python_slugify-6.1.2.dist-info/REQUESTED",
+      "name": "python_slugify-8.0.4.dist-info/REQUESTED",
       "size": 0,
       "perm": 420
     },
     {
-      "name": "python_slugify-6.1.2.dist-info/WHEEL",
+      "name": "python_slugify-8.0.4.dist-info/WHEEL",
       "size": 110,
       "perm": 420
     },
     {
-      "name": "python_slugify-6.1.2.dist-info/entry_points.txt",
-      "size": 51,
+      "name": "python_slugify-8.0.4.dist-info/entry_points.txt",
+      "size": 50,
       "perm": 420
     },
     {
-      "name": "python_slugify-6.1.2.dist-info/top_level.txt",
+      "name": "python_slugify-8.0.4.dist-info/top_level.txt",
       "size": 8,
-      "perm": 420
-    },
-    {
-      "name": "six-1.16.0.dist-info",
-      "size": 0,
-      "perm": 2147484141
-    },
-    {
-      "name": "six-1.16.0.dist-info/INSTALLER",
-      "size": 4,
-      "perm": 420
-    },
-    {
-      "name": "six-1.16.0.dist-info/LICENSE",
-      "size": 1066,
-      "perm": 420
-    },
-    {
-      "name": "six-1.16.0.dist-info/METADATA",
-      "size": 1795,
-      "perm": 420
-    },
-    {
-      "name": "six-1.16.0.dist-info/RECORD",
-      "size": 561,
-      "perm": 420
-    },
-    {
-      "name": "six-1.16.0.dist-info/WHEEL",
-      "size": 110,
-      "perm": 420
-    },
-    {
-      "name": "six-1.16.0.dist-info/top_level.txt",
-      "size": 4,
-      "perm": 420
-    },
-    {
-      "name": "six.py",
-      "size": 34549,
       "perm": 420
     },
     {
@@ -789,12 +699,12 @@
     },
     {
       "name": "slugify/__init__.py",
-      "size": 46,
+      "size": 346,
       "perm": 420
     },
     {
       "name": "slugify/__main__.py",
-      "size": 3866,
+      "size": 3961,
       "perm": 420
     },
     {
@@ -803,13 +713,18 @@
       "perm": 420
     },
     {
+      "name": "slugify/py.typed",
+      "size": 0,
+      "perm": 420
+    },
+    {
       "name": "slugify/slugify.py",
-      "size": 5795,
+      "size": 6180,
       "perm": 420
     },
     {
       "name": "slugify/special.py",
-      "size": 1167,
+      "size": 1222,
       "perm": 420
     },
     {
@@ -880,12 +795,12 @@
     },
     {
       "name": "yaml/__init__.py",
-      "size": 12309,
+      "size": 12311,
       "perm": 420
     },
     {
       "name": "yaml/_yaml.cpython-311-aarch64-linux-gnu.so",
-      "size": 2519728,
+      "size": 2519832,
       "perm": 493,
       "compressed": true
     },
