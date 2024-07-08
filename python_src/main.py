@@ -1,7 +1,13 @@
 import json
 import sys
+import warnings
 
 from go_jinja2.jinja2_renderer import Jinja2Renderer
+
+with warnings.catch_warnings():
+    # jsonpath_ng contains regexes that cause these warnings when importing:
+    # SyntaxWarning: invalid escape sequence '\('
+    import jsonpath_ng
 
 
 def main():
