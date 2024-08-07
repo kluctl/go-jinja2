@@ -20,8 +20,8 @@ github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99 h1:BQSFePA1RWJOl
 github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99/go.mod h1:1lJo3i6rXxKeerYnT8Nvf0QmHCRC1n8sfWVwXF2Frvo=
 github.com/jinzhu/copier v0.4.0 h1:w3ciUoD19shMCRargcpm0cm91ytaBhDvuRpz1ODO/U8=
 github.com/jinzhu/copier v0.4.0/go.mod h1:DfbEm0FYsaqBcKcFuvmOZb218JkPGtvSHsKg8S8hyyg=
-github.com/kluctl/go-embed-python v0.0.0-3.11.9-20240415-1 h1:WIKCwheVCfZsDmhtfVyaG5BZPxshHY/+cv5kLlmfq5Y=
-github.com/kluctl/go-embed-python v0.0.0-3.11.9-20240415-1/go.mod h1:9kqX8IjRCNh4ppXxlKGtLN+QFuvsdSsNGKsTLgdSNRw=
+github.com/kluctl/go-embed-python v0.0.0-3.12.3-20240415-2 h1:JcYhVgX7jFN8QcoBxx8/kLxUyeUzE/JnGf5ntulNPPM=
+github.com/kluctl/go-embed-python v0.0.0-3.12.3-20240415-2/go.mod h1:9kqX8IjRCNh4ppXxlKGtLN+QFuvsdSsNGKsTLgdSNRw=
 github.com/kr/pretty v0.3.1 h1:flRD4NNwYAUpkphVc1HcthR4KEIFJ65n8Mw5qdRn3LE=
 github.com/kr/text v0.2.0 h1:5Nx0Ya0ZqY2ygV366QzturHI13Jq95ApcVaJBhpS+AY=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
