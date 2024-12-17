@@ -1,5 +1,9 @@
 # Embedded Jinja2 Renderer
 
+> ⚠️**This go-jina2 module is deprecated and archived**⚠️
+>
+> Please see https://github.com/kluctl/kluctl/pull/1246 for the reasoning.
+
 This library provides an embedded Jinja2 renderer, based on https://github.com/kluctl/go-embed-python. It works
 by spawning one (or multiple) Jinaj2 renderer processes which communicate with your Go application via stdin/stdout.
 
